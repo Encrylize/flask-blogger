@@ -1,5 +1,11 @@
 <html>
   <head>
+    {% if title %}
+      <title>{{ title }} - {{ config["BLOG_NAME"] }}</title>
+    {% else %}
+      <title>{{ config["BLOG_NAME"] }}</title>
+    {% endif %}
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/stylesheet.css') }}" rel="stylesheet">
