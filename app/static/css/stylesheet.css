@@ -2,3 +2,8 @@
     border-radius: 0;
     border: none;
 }
+
+.post-byline {
+    padding-bottom: 5px;
+    border-bottom: 1px solid black;
+}
