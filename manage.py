@@ -5,7 +5,7 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell
 
 from app import create_app, db
-from app.models import Post
+from app.models import Post, Tag
 from config import basedir
 
 app = create_app(os.getenv('CONFIG', 'default'))
@@ -20,7 +20,8 @@ def make_shell_context():
     return {
         'app': app,
         'db': db,
-        'Post': Post
+        'Post': Post,
+        'Tag': Tag
     }
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
