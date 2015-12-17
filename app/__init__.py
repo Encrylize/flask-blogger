@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_moment import Moment
+from flask_security import Security, SQLAlchemyUserDatastore
 from flask_sqlalchemy import SQLAlchemy
 
 from config import config
@@ -8,6 +9,10 @@ from config import config
 db = SQLAlchemy()
 lm = LoginManager()
 moment = Moment()
+security = Security()
+
+from app.models import User, Role
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
 
 def create_app(config_name):
@@ -28,6 +33,7 @@ def create_app(config_name):
     db.init_app(app)
     lm.init_app(app)
     moment.init_app(app)
+    security.init_app(app, user_datastore)
 
     from app.main.views import main
     from app.admin.views import admin

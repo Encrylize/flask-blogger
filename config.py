@@ -13,6 +13,9 @@ class Config:
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
+    SECURITY_PASSWORD_HASH = 'bcrypt'
+    SECURITY_PASSWORD_SALT = os.getenv('SECRET_KEY')
+
 
 class DevelopmentConfig(Config):
     """

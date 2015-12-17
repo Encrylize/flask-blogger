@@ -4,7 +4,7 @@ import coverage
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell
 
-from app import create_app, db
+from app import create_app, db, user_datastore
 from app.models import Post, Tag
 from config import basedir
 
@@ -32,7 +32,7 @@ cov = coverage.coverage(branch=True, include='app/*')
 
 @manager.command
 def test(coverage=False):
-    """ Run the unit tests. """
+    """ Runs the unit tests. """
 
     if coverage:
         cov.start()
@@ -50,6 +50,13 @@ def test(coverage=False):
         cov.html_report(directory=cov_dir)
         print('HTML version: %s/index.html' % cov_dir)
         cov.erase()
+
+
+@manager.command
+def createadmin(email, password):
+    """ Creates an admin user. """
+    user_datastore.create_user(email=email, password=password)
+    db.session.commit()
 
 
 if __name__ == '__main__':
