@@ -2,7 +2,6 @@ from flask_pagedown.fields import PageDownField
 from wtforms.fields import StringField
 from wtforms.validators import DataRequired
 
-from app import db
 from app.models import Post, Tag
 from app.utils.helpers import get_or_create
 from app.utils.forms import RedirectForm
@@ -24,8 +23,7 @@ class PostForm(RedirectForm):
 
         self.populate_obj(self.obj)
         self.obj.tags = [get_or_create(Tag, name=tag)[0] for tag in self.tags.data]
-        db.session.add(self.obj)
-        db.session.commit()
+        self.obj.save()
 
     def populate_obj(self, obj):
         for name, field in self._fields.items():
