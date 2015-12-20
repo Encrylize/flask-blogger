@@ -1,7 +1,7 @@
 {% extends "admin/layout.html" %}
 
 {% block content %}
-  <a class="col-xs-12 col-md-offset-3 col-md-6 btn btn-info" href="#">Create Post</a>
+  <a class="col-xs-12 col-md-offset-3 col-md-6 btn btn-info" href="{{ url_for('admin.new_post') }}">Create Post</a>
   <table class="table">
     <thead>
       <tr>
