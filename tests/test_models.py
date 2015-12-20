@@ -2,7 +2,6 @@ from datetime import datetime
 
 from freezegun import freeze_time
 
-from app import db
 from app.models import Post, Tag
 from tests.general import AppTestCase
 
@@ -11,8 +10,7 @@ class TestModels(AppTestCase):
     @freeze_time(datetime.now())
     def test_post_initialization(self):
         post = Post(title='foo', body='bar')
-        db.session.add(post)
-        db.session.commit()
+        post.save()
 
         self.assertEqual(datetime.now(), post.timestamp)
         self.assertEqual(post.title, 'foo')
@@ -26,8 +24,8 @@ class TestModels(AppTestCase):
         post_1.tags.append(tag_1)
         post_1.tags.append(tag_2)
         post_2.tags.append(tag_1)
-        db.session.add_all([post_1, post_2, tag_1, tag_2])
-        db.session.commit()
+        post_1.save()
+        post_2.save()
 
         self.assertIn(tag_1, post_1.tags)
         self.assertIn(tag_2, post_1.tags)
