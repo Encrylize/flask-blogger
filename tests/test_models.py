@@ -1,24 +1,13 @@
 from datetime import datetime
-import unittest
 
 from freezegun import freeze_time
 
-from app import create_app, db
+from app import db
 from app.models import Post, Tag
+from tests.general import AppTestCase
 
 
-class TestModels(unittest.TestCase):
-    def setUp(self):
-        self.app = create_app('testing')
-        self.app_ctx = self.app.app_context()
-        self.app_ctx.push()
-        db.create_all()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-        self.app_ctx.pop()
-
+class TestModels(AppTestCase):
     @freeze_time(datetime.now())
     def test_post_initialization(self):
         post = Post(title='foo', body='bar')

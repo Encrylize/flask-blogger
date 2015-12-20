@@ -1,23 +1,8 @@
-import unittest
-
-from app import create_app, db
 from app.utils.forms import RedirectForm
+from tests.general import AppTestCase
 
 
-class FormTestCase(unittest.TestCase):
-    def setUp(self):
-        self.app = create_app('testing')
-        self.app_ctx = self.app.app_context()
-        self.app_ctx.push()
-        db.create_all()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-        self.app_ctx.pop()
-
-
-class TestRedirectForm(FormTestCase):
+class TestRedirectForm(AppTestCase):
     def setUp(self):
         super().setUp()
         self.form = RedirectForm()

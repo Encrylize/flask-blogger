@@ -3,14 +3,7 @@ import unittest
 from wtforms import Form
 
 from app.utils.fields import TagListField
-
-
-class DummyPostData(dict):
-    def getlist(self, key):
-        v = self[key]
-        if not isinstance(v, (list, tuple)):
-            v = [v]
-        return v
+from tests.general import DummyPostData
 
 
 class TestFields(unittest.TestCase):
