@@ -35,3 +35,13 @@ class TestModels(AppTestCase):
         self.assertIn(post_1, tag_1.posts)
         self.assertIn(post_2, tag_1.posts)
         self.assertNotIn(post_2, tag_2.posts)
+
+    def test_post_save(self):
+        post_1 = Post(title=u'Hello World! ß', body='foobar')
+        post_1.save()
+
+        post_2 = Post(title=u'Hello World! ß', body='foobar')
+        post_2.save()
+
+        self.assertEquals(post_1.slug, 'hello-world-ss')
+        self.assertEquals(post_2.slug, 'hello-world-ss2')

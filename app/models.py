@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from flask_security import UserMixin, RoleMixin
+from slugify import slugify
 
 from app import db
 
@@ -39,6 +40,7 @@ class Post(db.Model):
     title = db.Column(db.String(120), nullable=False)
     body = db.Column(db.String(10000), nullable=False)
     timestamp = db.Column(db.DateTime)
+    slug = db.Column(db.String(160))
     tags = db.relationship('Tag', secondary=tags_posts, lazy='dynamic',
                            backref=db.backref('posts', lazy='dynamic'))
     post_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -46,6 +48,23 @@ class Post(db.Model):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.timestamp = datetime.utcnow()
+
+    def save(self):
+        slug = slugify(self.title)
+
+        if Post.query.filter_by(slug=slug).first():
+            version = 2
+            while True:
+                new_slug = '%s%d' % (slug, version)
+                if Post.query.filter_by(slug=new_slug).first() is None:
+                    slug = new_slug
+                    break
+                version += 1
+
+        self.slug = slug
+
+        db.session.add(self)
+        db.session.commit()
 
     def __repr__(self):
         return '<Post %d>' % self.id
