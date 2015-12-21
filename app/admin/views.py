@@ -30,6 +30,20 @@ def new_post():
     return render_template('admin/post_form.html', form=form)
 
 
+@admin.route('/edit/post/<int:id>/<slug>', methods=['GET', 'POST'])
+def edit_post(id, slug=None):
+    post = Post.query.get_or_404(id)
+    if slug is None:
+        return redirect(url_for('admin.edit_post', id=id, slug=post.slug))
+
+    form = PostForm(obj=post)
+    if form.validate_on_submit():
+        form.save()
+        return form.redirect(url_for('admin.index'))
+
+    return render_template('admin/post_form.html', form=form)
+
+
 @admin.before_request
 def require_login():
     if not current_user.is_authenticated:

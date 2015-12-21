@@ -14,7 +14,7 @@
         <tr>
           <td><a href="#">{{ post.title }}</a></td>
           <td>
-            <a class="col-xs-6 glyphicon glyphicon-pencil" href="#"></a>
+            <a class="col-xs-6 glyphicon glyphicon-pencil" href="{{ url_for('admin.edit_post', id=post.id, slug=post.slug) }}"></a>
             <a class="col-xs-6 glyphicon glyphicon-trash" href="#"></a>
           </td>
         </tr>
