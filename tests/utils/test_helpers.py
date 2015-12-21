@@ -3,7 +3,7 @@ from app.utils.helpers import get_or_create
 from tests.general import AppTestCase
 
 
-class TestUtils(AppTestCase):
+class TestHelpers(AppTestCase):
     def test_get_or_create(self):
         post1, created1 = get_or_create(Post, title='foo', body='bar')
         post1.save()
