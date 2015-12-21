@@ -42,4 +42,4 @@ class TestModels(AppTestCase):
         post_2.save()
 
         self.assertEquals(post_1.slug, 'hello-world-ss')
-        self.assertEquals(post_2.slug, 'hello-world-ss2')
+        self.assertEquals(post_2.slug, 'hello-world-ss')

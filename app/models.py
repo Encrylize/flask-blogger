@@ -50,19 +50,9 @@ class Post(db.Model):
         self.timestamp = datetime.utcnow()
 
     def save(self):
-        slug = slugify(self.title)
+        """ Creates the slug from the title and saves the post. """
 
-        if Post.query.filter_by(slug=slug).first():
-            version = 2
-            while True:
-                new_slug = '%s%d' % (slug, version)
-                if Post.query.filter_by(slug=new_slug).first() is None:
-                    slug = new_slug
-                    break
-                version += 1
-
-        self.slug = slug
-
+        self.slug = slugify(self.title)
         db.session.add(self)
         db.session.commit()
 
