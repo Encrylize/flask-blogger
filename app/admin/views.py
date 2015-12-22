@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, current_app
+from flask import Blueprint, render_template, redirect, url_for, current_app, request
 from flask_security import current_user
 
+from app import db
 from app.models import Post
 from app.admin.forms import PostForm
+from app.utils.helpers import get_redirect_target, is_safe_url
 
 admin = Blueprint('admin', __name__)
 
@@ -42,6 +44,14 @@ def edit_post(id, slug=None):
         return form.redirect(url_for('admin.index'))
 
     return render_template('admin/post_form.html', form=form)
+
+
+@admin.route('/delete/post/<int:id>')
+def delete_post(id):
+    post = Post.query.get_or_404(id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(get_redirect_target())
 
 
 @admin.before_request

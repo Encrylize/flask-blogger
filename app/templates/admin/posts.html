@@ -21,7 +21,7 @@
           </td>
           <td>
             <a class="col-xs-6 glyphicon glyphicon-pencil" href="{{ url_for('admin.edit_post', id=post.id, slug=post.slug) }}"></a>
-            <a class="col-xs-6 glyphicon glyphicon-trash" href="#"></a>
+            <a class="col-xs-6 glyphicon glyphicon-trash" href="{{ url_for('admin.delete_post', id=post.id) }}" onclick="return confirm('Are you sure?')"></a>
           </td>
         </tr>
       {% endfor %}
