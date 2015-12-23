@@ -1,10 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, current_app, request
+from flask import Blueprint, render_template, redirect, url_for, current_app
 from flask_security import current_user
 
 from app import db
 from app.models import Post
 from app.admin.forms import PostForm
-from app.utils.helpers import get_redirect_target, is_safe_url
+from app.utils.helpers import get_redirect_target
 
 admin = Blueprint('admin', __name__)
 
