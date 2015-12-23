@@ -54,11 +54,19 @@ class Post(db.Model):
         self.timestamp = datetime.utcnow()
 
     def save(self):
-        """ Creates the slug from the title and saves the post. """
+        """
+        Creates the slug and saves the post.
+
+        Returns:
+            The Post object
+
+        """
 
         self.slug = slugify(self.title)
         db.session.add(self)
         db.session.commit()
+
+        return self
 
     def __repr__(self):
         return '<Post %d>' % self.id
