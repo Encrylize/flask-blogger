@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, current_app
+from flask import Blueprint, render_template, redirect, url_for, current_app, flash
 from flask_security import current_user
 
 from app import db
@@ -27,6 +27,8 @@ def new_post():
     form = PostForm()
     if form.validate_on_submit():
         form.save()
+        flash('Added post.', 'success')
+
         return form.redirect(url_for('admin.index'))
 
     return render_template('admin/post_form.html', form=form)
@@ -41,6 +43,8 @@ def edit_post(id, slug=None):
     form = PostForm(obj=post)
     if form.validate_on_submit():
         form.save()
+        flash('Edited post.', 'success')
+
         return form.redirect(url_for('admin.index'))
 
     return render_template('admin/post_form.html', form=form)
@@ -51,6 +55,8 @@ def delete_post(id):
     post = Post.query.get_or_404(id)
     db.session.delete(post)
     db.session.commit()
+    flash('Deleted post.', 'success')
+
     return redirect(get_redirect_target())
 
 
