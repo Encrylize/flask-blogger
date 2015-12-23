@@ -9,16 +9,16 @@ from tests.general import AppTestCase
 class TestModels(AppTestCase):
     @freeze_time(datetime.now())
     def test_post_initialization(self):
-        post = Post(title='foo', body='bar')
+        post = Post(title='foo', short_text='bar')
         post.save()
 
         self.assertEqual(datetime.now(), post.timestamp)
         self.assertEqual(post.title, 'foo')
-        self.assertEqual(post.body, 'bar')
+        self.assertEqual(post.short_text, 'bar')
 
     def test_posts_tags_relationship(self):
-        post_1 = Post(title='foo', body='bar')
-        post_2 = Post(title='foo', body='bar')
+        post_1 = Post(title='foo', short_text='bar')
+        post_2 = Post(title='foo', short_text='bar')
         tag_1 = Tag(name='tag 1')
         tag_2 = Tag(name='tag 2')
         post_1.tags.append(tag_1)
@@ -35,10 +35,10 @@ class TestModels(AppTestCase):
         self.assertNotIn(post_2, tag_2.posts)
 
     def test_post_save(self):
-        post_1 = Post(title=u'Hello World! ß', body='foobar')
+        post_1 = Post(title=u'Hello World! ß', short_text='foobar')
         post_1.save()
 
-        post_2 = Post(title=u'Hello World! ß', body='foobar')
+        post_2 = Post(title=u'Hello World! ß', short_text='foobar')
         post_2.save()
 
         self.assertEquals(post_1.slug, 'hello-world-ss')

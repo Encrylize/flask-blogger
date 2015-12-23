@@ -10,7 +10,8 @@ from app.utils.fields import TagListField
 
 class PostForm(RedirectForm):
     title = StringField('Title', [DataRequired()])
-    body = PageDownField('Body', [DataRequired()])
+    short_text = PageDownField('Short text (displayed as preview)')
+    long_text = PageDownField('Long text')
     tags = TagListField('Tags (separated by comma)')
 
     def __init__(self, *args, **kwargs):

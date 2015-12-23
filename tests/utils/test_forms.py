@@ -9,14 +9,14 @@ class TestPostForm(AppTestCase):
         self.form = PostForm
 
     def test_save(self):
-        form = self.form(DummyPostData(title='foo', body='bar', tags='foo, bar, foo bar'))
+        form = self.form(DummyPostData(title='foo', short_text='bar', tags='foo, bar, foo bar'))
         form.save()
 
         post1 = Post.query.first()
         tags = Tag.query.all()
         self.assertEquals(tags, post1.tags.all())
 
-        form = self.form(DummyPostData(title='foo', body='bar', tags='foo, bar, someothertag'))
+        form = self.form(DummyPostData(title='foo', short_text='bar', tags='foo, bar, someothertag'))
         form.save()
 
         post2 = Post.query.all()[-1]

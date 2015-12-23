@@ -20,21 +20,21 @@ class TestClient(AppTestCase):
     def test_new_post(self):
         self.client.post(url_for('admin.new_post'), data={
             'title': 'foo',
-            'body': 'bar',
+            'short_text': 'bar',
             'tags': 'foobar'
         })
         post = Post.query.first()
         self.assertIsNotNone(post)
 
     def test_edit_post(self):
-        post = Post(title='foo', body='bar')
+        post = Post(title='foo', short_text='bar')
         post.save()
 
         self.client.post(url_for('admin.edit_post', id=post.id, slug=post.slug), data={
             'title': 'bar',
-            'body': 'foo',
+            'short_text': 'foo',
             'tags': 'foobar'
         })
         self.assertEquals(post.title, 'bar')
-        self.assertEquals(post.body, 'foo')
+        self.assertEquals(post.short_text, 'foo')
         self.assertIsNotNone(Tag.query.first())

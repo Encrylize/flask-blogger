@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask_security import UserMixin, RoleMixin
 from slugify import slugify
+from sqlalchemy.schema import CheckConstraint
 
 from app import db
 
@@ -38,12 +39,15 @@ class User(db.Model, UserMixin):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
-    body = db.Column(db.String(10000), nullable=False)
+    short_text = db.Column(db.String(1000))
+    long_text = db.Column(db.String(10000))
     timestamp = db.Column(db.DateTime)
     slug = db.Column(db.String(160))
     tags = db.relationship('Tag', secondary=tags_posts, lazy='dynamic',
                            backref=db.backref('posts', lazy='dynamic'))
     post_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    __table_args__ = (CheckConstraint('NOT(short_text IS NULL AND long_text IS NULL)'),)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
