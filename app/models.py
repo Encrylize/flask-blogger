@@ -2,6 +2,8 @@ from datetime import datetime
 
 from flask_security import UserMixin, RoleMixin
 from slugify import slugify
+from sqlalchemy import event
+from sqlalchemy.orm import Session
 from sqlalchemy.schema import CheckConstraint
 
 from app import db
@@ -10,8 +12,8 @@ roles_users = db.Table('roles_users',
                        db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
                        db.Column('role_id', db.Integer, db.ForeignKey('role.id')))
 tags_posts = db.Table('tags_posts',
-                      db.Column('post_id', db.Integer, db.ForeignKey('post.id')),
-                      db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')))
+                      db.Column('post_id', db.Integer, db.ForeignKey('post.id', ondelete='cascade')),
+                      db.Column('tag_id', db.Integer, db.ForeignKey('tag.id', ondelete='cascade')))
 
 
 class Role(db.Model, RoleMixin):
@@ -78,3 +80,8 @@ class Tag(db.Model):
 
     def __repr__(self):
         return '<Tag %d>' % self.id
+
+
+@event.listens_for(Session, 'after_flush')
+def delete_tag_orphans(session, ctx):
+    session.query(Tag).filter(~Tag.posts.any()).delete(synchronize_session=False)

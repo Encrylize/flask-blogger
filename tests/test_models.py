@@ -3,6 +3,7 @@ from datetime import datetime
 from freezegun import freeze_time
 from sqlalchemy.exc import IntegrityError
 
+from app import db
 from app.models import Post, Tag
 from tests.general import AppTestCase
 
@@ -19,7 +20,7 @@ class TestPost(AppTestCase):
         post_2 = Post(title='post 2', short_text='short text').save()
         tag_1, tag_2 = Tag(name='tag 1'), Tag(name='tag 2')
         post_1.tags.extend([tag_1, tag_2])
-        post_2.tags.extend([tag_1])
+        post_2.tags.append(tag_1)
 
         self.assertIn(tag_1, post_1.tags.all())
         self.assertIn(tag_2, post_1.tags.all())
@@ -38,3 +39,24 @@ class TestPost(AppTestCase):
         post_1 = Post(title='post 1')
 
         self.assertRaises(IntegrityError, post_1.save)
+
+
+class TestTag(AppTestCase):
+    def test_auto_delete_orphan(self):
+        post = Post(title='foo', short_text='bar', long_text='baz').save()
+        tag = Tag(name='foobar')
+        post.tags.append(tag)
+
+        self.assertIsNotNone(Tag.query.first())
+
+        post.tags.remove(tag)
+
+        self.assertIsNone(Tag.query.first())
+
+        tag = Tag(name='foobar')
+        post.tags.append(tag)
+        db.session.delete(post)
+        db.session.commit()
+
+        self.assertIsNone(Tag.query.first())
+
