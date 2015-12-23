@@ -37,7 +37,7 @@ class TestClient(AppTestCase):
             'tags': 'foobar'
         })
 
-        self.assertEquals(post.title, 'baz')
-        self.assertEquals(post.short_text, 'foo')
-        self.assertEquals(post.long_text, 'bar')
+        self.assertEqual(post.title, 'baz')
+        self.assertEqual(post.short_text, 'foo')
+        self.assertEqual(post.long_text, 'bar')
         self.assertIsNotNone(Tag.query.first())

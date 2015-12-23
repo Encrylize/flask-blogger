@@ -31,8 +31,8 @@ class TestPost(AppTestCase):
         post_1 = Post(title='Hello World! ß', short_text='foobar').save()
         post_2 = Post(title='Hello World! ß', short_text='foobar').save()
 
-        self.assertEquals(post_1.slug, 'hello-world-ss')
-        self.assertEquals(post_2.slug, 'hello-world-ss')
+        self.assertEqual(post_1.slug, 'hello-world-ss')
+        self.assertEqual(post_2.slug, 'hello-world-ss')
 
     def test_short_text_or_long_text_is_not_null(self):
         post_1 = Post(title='post 1')

@@ -15,7 +15,7 @@ class TestHelpers(AppTestCase):
 
         self.assertTrue(created_1)
         self.assertFalse(created_2)
-        self.assertEquals(post_1, post_2)
+        self.assertEqual(post_1, post_2)
 
     def test_is_safe_url(self):
         with self.app.test_request_context():
@@ -29,7 +29,7 @@ class TestHelpers(AppTestCase):
             self.assertIsNone(get_redirect_target())
 
         with self.app.test_request_context('/?next=safe_internal_link'):
-            self.assertEquals(get_redirect_target(), 'safe_internal_link')
+            self.assertEqual(get_redirect_target(), 'safe_internal_link')
 
 
 class TestFields(AppTestCase):
@@ -43,8 +43,8 @@ class TestFields(AppTestCase):
         form_1 = self.TestForm(DummyPostData(tag_list_field=post.tags))
         form_2 = self.TestForm(DummyPostData(tag_list_field='foo, bar, foo bar,   whitespace    ,'))
 
-        self.assertEquals(form_1.tag_list_field.data, ['tag 1', 'tag 2'])
-        self.assertEquals(form_2.tag_list_field.data, ['foo', 'bar', 'foo bar', 'whitespace'])
+        self.assertEqual(form_1.tag_list_field.data, ['tag 1', 'tag 2'])
+        self.assertEqual(form_2.tag_list_field.data, ['foo', 'bar', 'foo bar', 'whitespace'])
 
 
 
@@ -59,7 +59,7 @@ class TestPostForm(AppTestCase):
         form_2 = PostForm(DummyPostData(title='foo', short_text='bar', tags='foo, bar, someothertag'))
         form_2.save()
         
-        self.assertEquals(len(Tag.query.all()), 4)
+        self.assertEqual(len(Tag.query.all()), 4)
 
         form_3 = PostForm(obj=post_1)
         form_3.tags.data = ['foo', 'bar', 'baz']
