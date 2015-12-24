@@ -5,8 +5,9 @@
   <table class="table">
     <thead>
       <tr>
-        <th class="col-xs-5 col-sm-5">Title</th>
-        <th class="col-xs-4 col-sm-5">Tags</th>
+        <th class="col-xs-3">Title</th>
+        <th class="col-xs-3">Date</th>
+        <th class="col-xs-3 col-sm-4">Tags</th>
         <th class="col-xs-3 col-sm-2">Action</th>
       </tr>
     </thead>
@@ -14,6 +15,7 @@
       {% for post in posts.items %}
         <tr>
           <td><a href="#">{{ post.title }}</a></td>
+          <td>{{ moment(post.timestamp).format('LLL') }}</td>
           <td>
             {% for tag in post.tags %}
               <span class="label label-primary">{{ tag.name }}</span>
