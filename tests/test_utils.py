@@ -1,3 +1,4 @@
+from flask import url_for
 from wtforms import Form
 
 from app import db
@@ -22,8 +23,7 @@ class TestHelpers(AppTestCase):
     def test_is_safe_url(self):
         with self.app.test_request_context():
             self.assertFalse(is_safe_url('http://externalsite.com'))
-            self.assertTrue(is_safe_url('http://' + self.app.config[
-                'SERVER_NAME']))
+            self.assertTrue(is_safe_url(url_for('main.index', _external=True)))
             self.assertTrue(is_safe_url('safe_internal_link'))
 
     def test_get_redirect_target(self):

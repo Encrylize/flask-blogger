@@ -6,7 +6,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     """ Base configuration with values used in all configurations. """
 
-    SERVER_NAME = os.getenv('SERVER_NAME', 'localhost:5000')
     SECRET_KEY = os.getenv('SECRET_KEY')
     BLOG_NAME = os.getenv('BLOG_NAME', 'Unnamed Blog')
 
