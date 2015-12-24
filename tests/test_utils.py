@@ -1,5 +1,6 @@
 from wtforms import Form
 
+from app import db
 from app.models import Post, Tag
 from app.admin.forms import PostForm
 from app.utils.fields import TagListField
@@ -10,7 +11,8 @@ from tests.general import AppTestCase, DummyPostData
 class TestHelpers(AppTestCase):
     def test_get_or_create(self):
         post_1, created_1 = get_or_create(Post, title='foo', short_text='bar')
-        post_1.save()
+        db.session.add(post_1)
+        db.session.commit()
         post_2, created_2 = get_or_create(Post, title='foo', short_text='bar')
 
         self.assertTrue(created_1)
@@ -37,9 +39,13 @@ class TestFields(AppTestCase):
         tag_list_field = TagListField()
 
     def test_tag_list_field(self):
-        post = Post(title='foo', short_text='bar').save()
+        post = Post(title='foo', short_text='bar')
+        db.session.add(post)
+        db.session.commit()
+
         tag_1, tag_2 = Tag(name='tag 1'), Tag(name='tag 2')
         post.tags.extend([tag_1, tag_2])
+
         form_1 = self.TestForm(DummyPostData(tag_list_field=post.tags))
         form_2 = self.TestForm(DummyPostData(tag_list_field='foo, bar, foo bar,   whitespace    ,'))
 

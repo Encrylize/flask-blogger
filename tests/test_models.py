@@ -16,8 +16,11 @@ class TestPost(AppTestCase):
         self.assertEqual(datetime.now(), post.timestamp)
 
     def test_tags_relationship(self):
-        post_1 = Post(title='post 1', short_text='short text').save()
-        post_2 = Post(title='post 2', short_text='short text').save()
+        post_1 = Post(title='post 1', short_text='short text')
+        post_2 = Post(title='post 2', short_text='short text')
+        db.session.add_all([post_1, post_2])
+        db.session.commit()
+
         tag_1, tag_2 = Tag(name='tag 1'), Tag(name='tag 2')
         post_1.tags.extend([tag_1, tag_2])
         post_2.tags.append(tag_1)
@@ -30,10 +33,9 @@ class TestPost(AppTestCase):
 
     def test_save(self):
         post_1 = Post(title='Hello World! ß', short_text='foobar').save()
-        post_2 = Post(title='Hello World! ß', short_text='foobar').save()
 
+        self.assertIsNotNone(Post.query.first())
         self.assertEqual(post_1.slug, 'hello-world-ss')
-        self.assertEqual(post_2.slug, 'hello-world-ss')
 
     def test_short_text_or_long_text_is_not_null(self):
         post_1 = Post(title='post 1')
@@ -43,7 +45,10 @@ class TestPost(AppTestCase):
 
 class TestTag(AppTestCase):
     def test_auto_delete_orphan(self):
-        post = Post(title='foo', short_text='bar', long_text='baz').save()
+        post = Post(title='foo', short_text='bar', long_text='baz')
+        db.session.add(post)
+        db.session.commit()
+
         tag = Tag(name='foobar')
         post.tags.append(tag)
 
