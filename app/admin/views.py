@@ -33,7 +33,7 @@ def new_post():
 
     return render_template('admin/post_form.html', form=form)
 
-
+@admin.route('/edit/post/<int:id>')
 @admin.route('/edit/post/<int:id>/<slug>', methods=['GET', 'POST'])
 def edit_post(id, slug=None):
     post = Post.query.get_or_404(id)
@@ -57,7 +57,7 @@ def delete_post(id):
     db.session.commit()
     flash('Deleted post.', 'success')
 
-    return redirect(get_redirect_target())
+    return redirect(get_redirect_target() or url_for('admin.index'))
 
 
 @admin.before_request
