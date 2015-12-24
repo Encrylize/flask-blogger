@@ -63,6 +63,11 @@ class TestAdminBlueprint(ClientTestCase):
         self.assertEqual(response.headers['Location'],
                          url_for('admin.edit_post', id=post.id, slug=post.slug, _external=True))
 
+        response = self.client.post(url_for('admin.edit_post', id=post.id, slug=post.slug), data={
+                     'title': 'baz',
+                   }, follow_redirects=True)
+        self.assertIn(b'Please fill out at least one of these fields.', response.data)
+
     def test_delete_post(self):
         post = Post(title='foo', short_text='bar')
         db.session.add(post)

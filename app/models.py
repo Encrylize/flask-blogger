@@ -4,7 +4,6 @@ from flask_security import UserMixin, RoleMixin
 from slugify import slugify
 from sqlalchemy import event
 from sqlalchemy.orm import Session
-from sqlalchemy.schema import CheckConstraint
 
 from app import db
 
@@ -49,7 +48,7 @@ class Post(db.Model):
                            backref=db.backref('posts', lazy='dynamic'))
     post_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    __table_args__ = (CheckConstraint('NOT(short_text IS NULL AND long_text IS NULL)'),)
+    __table_args__ = (db.CheckConstraint('NOT(short_text IS NULL AND long_text IS NULL)'),)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

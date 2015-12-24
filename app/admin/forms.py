@@ -18,6 +18,17 @@ class PostForm(RedirectForm):
         super().__init__(*args, **kwargs)
         self.obj = kwargs.get('obj')
 
+    def validate_on_submit(self):
+        if not super().validate_on_submit():
+            return False
+
+        if not self.short_text.data and not self.long_text.data:
+            self.short_text.errors.append('Please fill out at least one of these fields.')
+            self.long_text.errors.append('Please fill out at least one of these fields.')
+            return False
+
+        return True
+
     def save(self):
         """
         Saves the Post object.
