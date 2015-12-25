@@ -3,11 +3,14 @@
 {% block content %}
   {% for post in posts %}
     <div class="post">
-      <h1 class="post-title">{{ post.title }}</h1>
+      <h1 class="post-title"><a href="{{ url_for('main.show_post', id=post.id, slug=post.slug) }}">{{ post.title }}</a></h1>
       <p class="post-byline">
-        Posted by <a href="#">{{ post.author }}</a> under {{ post.tags }}. ({{ moment(post.timestamp).format('LLL') }})
+        Posted on {{ moment(post.timestamp).format('LLL') }} under
+        {% for tag in post.tags %}
+          <span class="label label-primary">{{ tag.name }}</span>
+        {% endfor %}
       </p>
-      <p>{{ post.body }}</p>
+      <p>{{ post.short_text|markdown }}</p>
     </div>
   {% endfor %}
 {% endblock %}

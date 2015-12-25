@@ -7,3 +7,8 @@
     padding-bottom: 5px;
     border-bottom: 1px solid black;
 }
+
+.post-title a, a:hover {
+    color: #0f0f0f;
+    text-decoration: none;
+}
