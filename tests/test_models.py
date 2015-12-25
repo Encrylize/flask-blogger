@@ -65,3 +65,13 @@ class TestTag(AppTestCase):
 
         self.assertIsNone(Tag.query.first())
 
+    def test_add_slug_before_insert(self):
+        post = Post(title='foo', short_text='bar', long_text='baz')
+        db.session.add(post)
+        db.session.commit()
+
+        tag = Tag(name='foo bar')
+        post.tags.append(tag)
+        tag = Tag.query.first()
+
+        self.assertEqual(tag.slug, 'foo-bar')

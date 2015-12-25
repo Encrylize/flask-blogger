@@ -3,7 +3,7 @@ from datetime import datetime
 from flask_security import UserMixin, RoleMixin
 from slugify import slugify
 from sqlalchemy import event
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, Mapper
 
 from app import db
 
@@ -76,6 +76,7 @@ class Post(db.Model):
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60))
+    slug = db.Column(db.String(80))
 
     def __repr__(self):
         return '<Tag %d>' % self.id
@@ -84,3 +85,9 @@ class Tag(db.Model):
 @event.listens_for(Session, 'after_flush')
 def delete_tag_orphans(session, ctx):
     session.query(Tag).filter(~Tag.posts.any()).delete(synchronize_session=False)
+
+
+def before_tag_insert_listener(mapper, connection, target):
+    target.slug = slugify(target.name)
+
+event.listen(Tag, 'before_insert', before_tag_insert_listener)
