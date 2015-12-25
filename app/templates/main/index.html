@@ -1,7 +1,7 @@
 {% extends "main/layout.html" %}
 
 {% block content %}
-  {% for post in posts %}
+  {% for post in posts.items %}
     <div class="post">
       <h1 class="post-title"><a href="{{ url_for('main.show_post', id=post.id, slug=post.slug) }}">{{ post.title }}</a></h1>
       <p class="post-byline">
@@ -13,4 +13,20 @@
       <p>{{ post.short_text|markdown }}</p>
     </div>
   {% endfor %}
+
+  <div class="pull-left">
+    {% if posts.has_prev %}
+      <a class="btn btn-primary paginate-btn" href="{{ url_for('main.index', page=posts.prev_num) }}"><< Previous</a>
+    {% else %}
+      <a class="btn btn-default paginate-btn" href="#"><< Previous</a>
+    {% endif %}
+  </div>
+
+  <div class="pull-right">
+    {% if posts.has_next %}
+      <a class="btn btn-primary paginate-btn" href="{{ url_for('main.index', page=posts.next_num) }}">Next >></a>
+    {% else %}
+      <a class="btn btn-default paginate-btn" href="#">Next >></a>
+    {% endif %}
+  </div>
 {% endblock %}
