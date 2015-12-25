@@ -8,7 +8,12 @@
     border-bottom: 1px solid black;
 }
 
-.post-title a, a:hover {
+.post-title a, .post-title a:hover {
     color: #0f0f0f;
+    text-decoration: none;
+}
+
+.label a, .label a:hover {
+    color: white;
     text-decoration: none;
 }
