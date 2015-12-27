@@ -26,6 +26,7 @@ def show_post(id, slug=None):
     return render_template('main/post.html', post=post)
 
 
+@main.route('/tag/<int:id>')
 @main.route('/tag/<int:id>/<slug>')
 @main.route('/tag/<int:id>/<slug>/<int:page>')
 def show_tag(id, slug=None, page=1):
