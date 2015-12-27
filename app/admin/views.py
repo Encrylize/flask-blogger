@@ -33,6 +33,7 @@ def new_post():
 
     return render_template('admin/post_form.html', form=form)
 
+
 @admin.route('/edit/post/<int:id>')
 @admin.route('/edit/post/<int:id>/<slug>', methods=['GET', 'POST'])
 def edit_post(id, slug=None):

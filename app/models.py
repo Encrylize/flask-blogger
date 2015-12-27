@@ -84,10 +84,14 @@ class Tag(db.Model):
 
 @event.listens_for(Session, 'after_flush')
 def delete_tag_orphans(session, ctx):
+    """ Deletes all Tag objects with no posts. """
+
     session.query(Tag).filter(~Tag.posts.any()).delete(synchronize_session=False)
 
 
 def before_tag_insert_listener(mapper, connection, target):
+    """ Creates the slug for a Tag object. """
+
     target.slug = slugify(target.name)
 
 event.listen(Tag, 'before_insert', before_tag_insert_listener)
