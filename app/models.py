@@ -3,7 +3,7 @@ from datetime import datetime
 from flask_security import UserMixin, RoleMixin
 from slugify import slugify
 from sqlalchemy import event
-from sqlalchemy.orm import Session, Mapper
+from sqlalchemy.orm import Session
 
 from app import db
 
@@ -17,7 +17,7 @@ tags_posts = db.Table('tags_posts',
 
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
     description = db.Column(db.String(255))
 
     def __repr__(self):
@@ -26,8 +26,8 @@ class Role(db.Model, RoleMixin):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True)
-    password = db.Column(db.String(255))
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean)
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
@@ -75,8 +75,8 @@ class Post(db.Model):
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(60))
-    slug = db.Column(db.String(80))
+    name = db.Column(db.String(60), nullable=False)
+    slug = db.Column(db.String(80), nullable=False)
 
     def __repr__(self):
         return '<Tag %d>' % self.id
