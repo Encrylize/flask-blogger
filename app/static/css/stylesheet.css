@@ -8,12 +8,20 @@
     border-bottom: 1px solid black;
 }
 
-.post-title a, .post-title a:hover {
+.post-title a, .post-title a:hover, .icon:hover {
     color: #0f0f0f;
     text-decoration: none;
+}
+
+.icon {
+    color: #3c3c3c;
 }
 
 .label a, .label a:hover {
     color: white;
     text-decoration: none;
+}
+
+.new-post-btn {
+    margin-bottom: 20px;
 }
