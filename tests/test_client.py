@@ -42,6 +42,7 @@ class TestAdminBlueprint(ClientTestCase):
             'tags': 'foobar'
         })
         post = Post.query.first()
+
         self.assertIsNotNone(post)
 
     def test_edit_post(self):
@@ -60,12 +61,14 @@ class TestAdminBlueprint(ClientTestCase):
         self.assertIsNotNone(Tag.query.first())
 
         response = self.client.get(url_for('admin.edit_post', id=post.id))
+
         self.assertEqual(response.headers['Location'],
                          url_for('admin.edit_post', id=post.id, slug=post.slug, _external=True))
 
         response = self.client.post(url_for('admin.edit_post', id=post.id, slug=post.slug), data={
                      'title': 'baz',
                    }, follow_redirects=True)
+
         self.assertIn(b'Please fill out at least one of these fields.', response.data)
 
     def test_delete_post(self):
@@ -78,3 +81,23 @@ class TestAdminBlueprint(ClientTestCase):
         # Assert response code is a redirect
         self.assertEqual(response._status, '302 FOUND')
         self.assertIsNone(Post.query.first())
+
+
+class TestMainBlueprint(ClientTestCase):
+    def test_show_post(self):
+        post = Post(title='foo', short_text='bar', long_text='baz').save()
+        response = self.client.get(url_for('main.show_post', id=post.id), follow_redirects=True)
+
+        self.assertIn(b'foo', response.data)
+        self.assertIn(b'bar', response.data)
+        self.assertIn(b'baz', response.data)
+
+    def test_show_tag(self):
+        post = Post(title='foo', short_text='bar', long_text='baz').save()
+        tag = Tag(name='qux')
+        post.tags.append(tag)
+
+        response = self.client.get(url_for('main.show_tag', id=1), follow_redirects=True)
+
+        self.assertIn(b'foo', response.data)
+        self.assertIn(b'bar', response.data)
