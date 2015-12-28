@@ -22,12 +22,10 @@
           {% endif %}
         </ul>
 
-        <form class="navbar-form navbar-right">
+        <form class="navbar-form navbar-right" action="#" method="POST" role="search">
           <div class="input-group">
-            <input class="form-control" type="text">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="submit">Search</button>
-            </span>
+            {{ g.search_form.hidden_tag() }}
+            {{ g.search_form.search_field(class='form-control', placeholder='Search') }}
           </div>
         </form>
       </div>
