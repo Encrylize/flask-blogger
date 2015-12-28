@@ -5,6 +5,7 @@ from flask_moment import Moment
 from flask_pagedown import PageDown
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_sqlalchemy import SQLAlchemy
+from flask_whooshalchemy import whoosh_index
 
 from config import config
 
@@ -15,7 +16,7 @@ moment = Moment()
 pagedown = PageDown()
 security = Security()
 
-from app.models import User, Role
+from app.models import Post, User, Role
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
 
@@ -40,6 +41,7 @@ def create_app(config_name):
     moment.init_app(app)
     pagedown.init_app(app)
     security.init_app(app, user_datastore)
+    whoosh_index(app, Post)
 
     from app.main.views import main
     from app.admin.views import admin

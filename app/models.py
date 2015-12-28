@@ -38,6 +38,8 @@ class User(db.Model, UserMixin):
 
 
 class Post(db.Model):
+    __searchable__ = ['title', 'short_text', 'long_text']
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
     short_text = db.Column(db.String(1000))

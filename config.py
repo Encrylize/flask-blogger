@@ -28,6 +28,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv('DEV_DATABASE_URL')
 
+    WHOOSH_BASE = os.path.join(basedir, 'dev_search_database')
+
 
 class TestingConfig(Config):
     """
