@@ -1,6 +1,9 @@
 {% extends "main/layout.html" %}
 
 {% block content %}
-  <h3 class="page-header">Posts tagged with "{{ tag.name }}":</h3>
+  <div class="page-header">
+    <h2>Posts tagged with "{{ tag.name }}":</h2>
+  </div>
+
   {% include "main/post_previews.html" %}
 {% endblock %}

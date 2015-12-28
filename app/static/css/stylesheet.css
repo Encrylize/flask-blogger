@@ -25,3 +25,12 @@
 .new-post-btn {
     margin-bottom: 20px;
 }
+
+.tags {
+    padding: 0;
+    list-style: none;
+}
+
+.tags .label-default {
+    margin-left: 2px;
+}

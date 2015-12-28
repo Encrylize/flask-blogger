@@ -35,6 +35,28 @@
   </nav>
 
   <div class="container">
-    {% block content %}{% endblock %}
+    <div class="row">
+      <div class="col-md-9">
+        {% block content %}{% endblock %}
+      </div>
+
+      <div class="col-md-3">
+        <div class="page-header">
+          <h2>Tags</h2>
+        </div>
+
+        <ul class="tags">
+          {% for tag in tags %}
+            <li>
+              <span class="label label-primary">
+                <a href="{{ url_for('main.show_tag', id=tag.id, slug=tag.slug) }}">{{ tag.name }}</a>
+              </span>
+
+              <span class="label label-default">{{ tag.posts.count() }} posts</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
   </div>
 {% endblock %}

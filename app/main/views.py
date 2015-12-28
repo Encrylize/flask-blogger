@@ -38,3 +38,8 @@ def show_tag(id, slug=None, page=1):
                 page, current_app.config.get('POSTS_PER_PAGE'))
 
     return render_template('main/tag.html', posts=posts, tag=tag)
+
+
+@main.context_processor
+def context_processor():
+    return {'tags': Tag.query.all()}
