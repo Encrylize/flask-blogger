@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, current_app
 from sqlalchemy import desc
 
-from app.models import Post, Tag
+from app import db
+from app.models import Post, Tag, tags_posts
 
 main = Blueprint('main', __name__)
 
@@ -42,4 +43,4 @@ def show_tag(id, slug=None, page=1):
 
 @main.context_processor
 def context_processor():
-    return {'tags': Tag.query.all()}
+    return {'tags': Tag.query.join(tags_posts).group_by(Tag).order_by(desc(db.func.count(tags_posts.c.post_id))).all()}
