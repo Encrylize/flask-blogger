@@ -2,7 +2,6 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_misaka import Misaka
 from flask_moment import Moment
-from flask_pagedown import PageDown
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_sqlalchemy import SQLAlchemy
 from flask_whooshalchemy import whoosh_index
@@ -13,7 +12,6 @@ db = SQLAlchemy()
 lm = LoginManager()
 markdown = Misaka()
 moment = Moment()
-pagedown = PageDown()
 security = Security()
 
 from app.models import Post, User, Role
@@ -39,7 +37,6 @@ def create_app(config_name):
     lm.init_app(app)
     markdown.init_app(app)
     moment.init_app(app)
-    pagedown.init_app(app)
     security.init_app(app, user_datastore)
     whoosh_index(app, Post)
 

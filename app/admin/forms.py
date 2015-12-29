@@ -1,5 +1,4 @@
-from flask_pagedown.fields import PageDownField
-from wtforms.fields import StringField
+from wtforms.fields import StringField, TextAreaField
 from wtforms.validators import DataRequired
 
 from app.models import Post, Tag
@@ -10,8 +9,8 @@ from app.utils.fields import TagListField
 
 class PostForm(RedirectForm):
     title = StringField('Title', [DataRequired()])
-    short_text = PageDownField('Short text (displayed as preview)')
-    long_text = PageDownField('Long text')
+    short_text = TextAreaField('Short text (displayed as preview)')
+    long_text = TextAreaField('Long text')
     tags = TagListField('Tags (separated by comma)')
 
     def __init__(self, *args, **kwargs):

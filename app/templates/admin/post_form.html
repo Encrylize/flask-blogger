@@ -2,23 +2,19 @@
 {% from "macros.html" import render_generic_field %}
 
 {% block content %}
-{{ pagedown.include_pagedown() }}
 <div class="jumbotron">
   <form class="form-horizontal" method="POST">
     {{ form.hidden_tag() }}
     {{ render_generic_field(form.title) }}
-    {{ render_generic_field(form.short_text, only_input=True) }}
-    {{ render_generic_field(form.long_text, only_input=True) }}
+    {{ render_generic_field(form.short_text, **{'data-provide': 'markdown', 'data-hidden-buttons': 'cmdPreview'}) }}
+    {{ render_generic_field(form.long_text, **{'data-provide': 'markdown', 'data-hidden-buttons': 'cmdPreview'}) }}
     {{ render_generic_field(form.tags) }}
-
-    <div class="well col-md-offset-1 col-md-10">
-      {{ form.short_text(only_preview=True) }}
-      {{ form.long_text(only_preview=True) }}
-    </div>
 
     <div class="form-group">
       <input class="col-md-offset-3 col-md-6 col-xs-offset-1 col-xs-10 btn btn-primary" type="submit">
     </div>
   </form>
 </div>
+
+<script src="{{ url_for('static', filename='js/bootstrap-markdown.js') }}"></script>
 {% endblock %}
