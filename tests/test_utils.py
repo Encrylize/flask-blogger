@@ -68,11 +68,12 @@ class TestPostForm(AppTestCase):
         self.assertEqual(len(Tag.query.all()), 4)
 
         form_3 = PostForm(obj=post_1)
-        form_3.tags.data = ['foo', 'bar', 'baz']
+        form_3.tags.data = ['foo', 'bar', 'baz', 'duplicate', 'duplicate']
         form_3.save()
 
-        tag1 = Tag.query.filter_by(name='baz').first()
-        tag2 = Tag.query.filter_by(name='foo bar').first()
+        tag_1 = Tag.query.filter_by(name='baz').first()
+        tag_2 = Tag.query.filter_by(name='foo bar').first()
 
-        self.assertIsNotNone(tag1)
-        self.assertNotIn(tag2, post_1.tags.all())
+        self.assertIsNotNone(tag_1)
+        self.assertNotIn(tag_2, post_1.tags.all())
+        self.assertEqual(Tag.query.filter_by(name='duplicate').count(), 1)

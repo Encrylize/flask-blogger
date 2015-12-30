@@ -41,7 +41,7 @@ class PostForm(RedirectForm):
             self.obj = Post()
 
         self.populate_obj(self.obj)
-        self.obj.tags = [get_or_create(Tag, name=tag)[0] for tag in self.tags.data]
+        self.obj.tags = [get_or_create(Tag, name=tag)[0] for tag in set(self.tags.data)]
         return self.obj.save()
 
     def populate_obj(self, obj):
