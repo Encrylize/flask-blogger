@@ -8,10 +8,10 @@ It is still very WIP and barebones.
 * Create, edit and delete posts
 * Tag and categorize posts
 * Search through posts
+* WYSIWYG Markdown editor
 
 ## PLANNED FEATURES
 
-* WYSIWYG Markdown editor
 * Comment system
 * User management with permissions system
 * Customization through settings
