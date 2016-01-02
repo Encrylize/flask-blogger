@@ -25,7 +25,7 @@ def show_post(id, slug=None):
     if slug is None:
         return redirect(url_for('main.show_post', id=id, slug=post.slug))
 
-    return render_template('main/post.html', post=post)
+    return render_template('main/show_post.html', post=post)
 
 
 @main.route('/tag/<int:id>')
