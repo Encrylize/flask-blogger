@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, current_app, flash
+from flask import Blueprint, render_template, redirect, url_for, current_app, flash, session, request
 from flask_security import current_user
+from sqlalchemy import desc
 
 from app import db
-from app.models import Post
+from app.models import Post, Tag
 from app.admin.forms import PostForm
 from app.utils.helpers import get_redirect_target
 
@@ -18,13 +19,13 @@ def index():
 @admin.route('/posts')
 @admin.route('/posts/<int:page>')
 def show_posts(page=1):
-    posts = Post.query.paginate(page, current_app.config.get('POSTS_PER_PAGE'))
+    posts = Post.query.order_by(desc(Post.timestamp)).paginate(page, current_app.config.get('POSTS_PER_PAGE'))
     return render_template('admin/posts.html', posts=posts)
 
 
 @admin.route('/new/post', methods=['GET', 'POST'])
 def new_post():
-    form = PostForm()
+    form = PostForm(**session.pop('post_preview', {}))
     if form.validate_on_submit():
         form.save()
         flash('Added post.', 'success')
@@ -42,6 +43,9 @@ def edit_post(id, slug=None):
         return redirect(url_for('admin.edit_post', id=id, slug=post.slug))
 
     form = PostForm(obj=post)
+    for field, value in session.pop('post_preview', {}).items():
+        setattr(getattr(form, field), 'data', value)
+
     if form.validate_on_submit():
         form.save()
         flash('Edited post.', 'success')
@@ -61,7 +65,28 @@ def delete_post(id):
     return redirect(get_redirect_target() or url_for('admin.index'))
 
 
+@admin.route('/preview', methods=['GET', 'POST'])
+def preview_post():
+    form = PostForm()
+    session['post_preview'] = form.data
+    post = Post(**{k: v for k, v in session['post_preview'].items() if k not in ('next', 'tags')})
+    post.tags = [Tag(name=tag) for tag in form.tags.data]
+
+    return render_template('admin/preview_post.html', post=post)
+
+
 @admin.before_request
 def require_login():
     if not current_user.is_authenticated:
         return redirect(url_for('security.login', next='admin'))
+
+
+@admin.after_request
+def after_request(response):
+    if request.endpoint != 'admin.preview_post':
+        try:
+            session.pop('post_preview')
+        except KeyError:
+            pass
+
+    return response

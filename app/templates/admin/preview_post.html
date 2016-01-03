@@ -1,0 +1,6 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+  {% include 'post.html' %}
+  <a class="btn btn-primary" href="{{ request.referrer }}">Back</a>
+{% endblock %}

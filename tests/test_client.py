@@ -66,7 +66,7 @@ class TestAdminBlueprint(ClientTestCase):
                          url_for('admin.edit_post', id=post.id, slug=post.slug, _external=True))
 
         response = self.client.post(url_for('admin.edit_post', id=post.id, slug=post.slug), data={
-                     'title': 'baz',
+                       'title': 'baz',
                    }, follow_redirects=True)
 
         self.assertIn(b'Please fill out at least one of these fields.', response.data)
@@ -81,6 +81,31 @@ class TestAdminBlueprint(ClientTestCase):
         # Assert response code is a redirect
         self.assertEqual(response._status, '302 FOUND')
         self.assertIsNone(Post.query.first())
+
+    def test_new_post_preview(self):
+        response = self.client.post(url_for('admin.preview_post'), data={
+                       'title': 'foo',
+                       'short_text': 'bar',
+                       'long_text': 'baz',
+                       'tags': 'a, b, c'
+                   })
+
+        self.assertIn(b'foo', response.data)
+        self.assertIn(b'bar', response.data)
+        self.assertIn(b'baz', response.data)
+        self.assertIn(b'a', response.data)
+        self.assertIn(b'b', response.data)
+        self.assertIn(b'c', response.data)
+
+        response = self.client.get(url_for('admin.new_post'))
+
+        self.assertIn(b'foo', response.data)
+        self.assertIn(b'bar', response.data)
+        self.assertIn(b'baz', response.data)
+        self.assertIn(b'a, b, c', response.data)
+
+        with self.client.session_transaction() as session:
+            self.assertIsNone(session.get('post_preview'))
 
 
 class TestMainBlueprint(ClientTestCase):
