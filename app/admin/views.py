@@ -58,8 +58,7 @@ def edit_post(id, slug=None):
 @admin.route('/delete/post/<int:id>')
 def delete_post(id):
     post = Post.query.get_or_404(id)
-    db.session.delete(post)
-    db.session.commit()
+    post.delete()
     flash('Deleted post.', 'success')
 
     return redirect(get_redirect_target() or url_for('admin.index'))

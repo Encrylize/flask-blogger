@@ -6,6 +6,7 @@ from sqlalchemy import event
 from sqlalchemy.orm import Session
 
 from app import db
+from app.utils.database import CRUDMixin
 
 roles_users = db.Table('roles_users',
                        db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
@@ -15,16 +16,13 @@ tags_posts = db.Table('tags_posts',
                       db.Column('tag_id', db.Integer, db.ForeignKey('tag.id', ondelete='cascade')))
 
 
-class Role(db.Model, RoleMixin):
+class Role(db.Model, RoleMixin, CRUDMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     description = db.Column(db.String(255))
 
-    def __repr__(self):
-        return '<Role %d>' % self.id
 
-
-class User(db.Model, UserMixin):
+class User(db.Model, UserMixin, CRUDMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
@@ -33,11 +31,8 @@ class User(db.Model, UserMixin):
                             backref=db.backref('users', lazy='dynamic'))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
-    def __repr__(self):
-        return '<User %d>' % self.id
 
-
-class Post(db.Model):
+class Post(db.Model, CRUDMixin):
     __searchable__ = ['title', 'short_text', 'long_text']
 
     id = db.Column(db.Integer, primary_key=True)
@@ -66,22 +61,13 @@ class Post(db.Model):
         """
 
         self.slug = slugify(self.title)
-        db.session.add(self)
-        db.session.commit()
-
-        return self
-
-    def __repr__(self):
-        return '<Post %d>' % self.id
+        return super().save()
 
 
-class Tag(db.Model):
+class Tag(db.Model, CRUDMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60), nullable=False)
     slug = db.Column(db.String(80), nullable=False)
-
-    def __repr__(self):
-        return '<Tag %d>' % self.id
 
 
 class Setting(db.Model):
