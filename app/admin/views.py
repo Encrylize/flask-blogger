@@ -82,7 +82,7 @@ def require_login():
 
 
 @admin.after_request
-def after_request(response):
+def clear_post_preview(response):
     if request.endpoint != 'admin.preview_post':
         try:
             session.pop('post_preview')
