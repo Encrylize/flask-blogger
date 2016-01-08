@@ -51,7 +51,7 @@ class PostForm(RedirectForm):
 
 
 class SettingsForm(RedirectForm):
-    blog_title = StringField('Blog title', [DataRequired()])
+    blog_name = StringField('Blog name', [DataRequired()])
     posts_per_page = IntegerField('Posts per page', [DataRequired()])
 
     def validate_posts_per_page(self, field):
