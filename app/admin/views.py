@@ -4,7 +4,7 @@ from sqlalchemy import desc
 
 from app import db
 from app.models import Post, Tag
-from app.admin.forms import PostForm
+from app.admin.forms import PostForm, SettingsForm
 from app.utils.helpers import get_redirect_target
 
 admin = Blueprint('admin', __name__)
@@ -73,6 +73,15 @@ def preview_post():
     post.tags = [Tag(name=tag) for tag in form.tags.data]
 
     return render_template('admin/preview_post.html', post=post)
+
+
+@admin.route('/settings', methods=['GET', 'POST'])
+def edit_settings():
+    form = SettingsForm()
+    if form.validate_on_submit():
+        pass
+
+    return render_template('admin/settings.html', form=form)
 
 
 @admin.before_request
