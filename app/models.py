@@ -70,13 +70,10 @@ class Tag(db.Model, CRUDMixin):
     slug = db.Column(db.String(80), nullable=False)
 
 
-class Setting(db.Model):
+class Setting(db.Model, CRUDMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     value = db.Column(db.String(1000), nullable=False)
-
-    def __repr__(self):
-        return '<Setting %d>' % self.id
 
 
 @event.listens_for(Session, 'after_flush')
