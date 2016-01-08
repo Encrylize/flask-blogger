@@ -84,6 +84,15 @@ class Tag(db.Model):
         return '<Tag %d>' % self.id
 
 
+class Setting(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    value = db.Column(db.String(1000), nullable=False)
+
+    def __repr__(self):
+        return '<Setting %d>' % self.id
+
+
 @event.listens_for(Session, 'after_flush')
 def delete_tag_orphans(session, ctx):
     """ Deletes all Tag objects with no posts. """
