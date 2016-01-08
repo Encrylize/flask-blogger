@@ -1,5 +1,5 @@
-from wtforms.fields import StringField, TextAreaField
-from wtforms.validators import DataRequired
+from wtforms.fields import StringField, TextAreaField, IntegerField
+from wtforms.validators import DataRequired, ValidationError
 
 from app.models import Post, Tag
 from app.utils.helpers import get_or_create
@@ -48,3 +48,12 @@ class PostForm(RedirectForm):
         for name, field in self._fields.items():
             if name not in ('next', 'tags'):
                 field.populate_obj(obj, name)
+
+
+class SettingsForm(RedirectForm):
+    blog_title = StringField('Blog title', [DataRequired()])
+    posts_per_page = IntegerField('Posts per page', [DataRequired()])
+
+    def validate_posts_per_page(self, field):
+        if field.data < 1:
+            raise ValidationError('This field must have a value of at least 1.')
