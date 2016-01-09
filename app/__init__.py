@@ -15,6 +15,7 @@ moment = Moment()
 security = Security()
 
 from app.models import Post, User, Role
+from app.utils.settings import AppSettings
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
 
@@ -40,13 +41,8 @@ def create_app(config_name):
     security.init_app(app, user_datastore)
     whoosh_index(app, Post)
 
-    from app.utils.settings import AppSettings
-    with app.app_context():
-        app.config['SETTINGS'] = AppSettings()
-
-    @app.context_processor
-    def inject_settings():
-        return {'settings': app.config['SETTINGS']}
+    if not app.config['TESTING']:
+        configure_settings(app)
 
     from app.main.views import main
     from app.admin.views import admin
@@ -54,3 +50,21 @@ def create_app(config_name):
     app.register_blueprint(admin, url_prefix='/admin')
 
     return app
+
+
+def configure_settings(app):
+    """
+    Configures the settings for an app.
+
+    Args:
+        app: The Flask app object to attach the settings to.
+
+    """
+
+    with app.app_context():
+        app.config['SETTINGS'] = AppSettings()
+
+    @app.context_processor
+    def inject_settings():
+        return dict(settings=app.config['SETTINGS'])
+
