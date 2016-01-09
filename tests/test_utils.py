@@ -1,9 +1,11 @@
 from flask import url_for
 from wtforms import Form
+from wtforms.fields import StringField
 
 from app import db
 from app.models import Post, Tag
 from app.admin.forms import PostForm
+from app.utils.forms import RedirectForm
 from app.utils.fields import TagListField
 from app.utils.helpers import get_or_create, get_redirect_target, is_safe_url
 from tests.general import AppTestCase, DummyPostData
@@ -77,3 +79,20 @@ class TestPostForm(AppTestCase):
         self.assertIsNotNone(tag_1)
         self.assertNotIn(tag_2, post_1.tags.all())
         self.assertEqual(Tag.query.filter_by(name='duplicate').count(), 1)
+
+
+class TestRedirectForm(AppTestCase):
+    class TestForm(RedirectForm):
+        foo = StringField()
+        bar = StringField()
+
+    def test_populate_obj(self):
+        # Simulates an object, where one can use setattr(obj, attr, value) to set an attribute
+        obj = lambda: None
+        form = self.TestForm(foo='bar', bar='foo')
+        form.populate_obj(obj)
+
+        self.assertEqual(obj.foo, 'bar')
+        self.assertEqual(obj.bar, 'foo')
+        with self.assertRaises(AttributeError):
+            obj.next
