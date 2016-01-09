@@ -5,7 +5,7 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell
 
 from app import create_app, db, user_datastore
-from app.models import Post, Tag, User
+from app.models import Post, Tag, User, Setting
 from config import basedir
 
 app = create_app(os.getenv('CONFIG', 'default'))
@@ -17,13 +17,7 @@ manager = Manager(app)
 def make_shell_context():
     """ Creates the shell context for the manager. """
 
-    return {
-        'app': app,
-        'db': db,
-        'Post': Post,
-        'Tag': Tag,
-        'User': User
-    }
+    return dict(app=app, db=db, Post=Post, Tag=Tag, User=User, Setting=Setting)
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
