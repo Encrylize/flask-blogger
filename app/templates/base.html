@@ -1,9 +1,9 @@
 <html>
   <head>
     {% if title %}
-      <title>{{ title }} - {{ config['BLOG_NAME'] }}</title>
+      <title>{{ title }} - {{ settings.blog_name }}</title>
     {% else %}
-      <title>{{ config['BLOG_NAME'] }}</title>
+      <title>{{ settings.blog_name }}</title>
     {% endif %}
 
     {{ moment.include_jquery() }}
