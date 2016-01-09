@@ -3,7 +3,7 @@ from wtforms import Form
 from wtforms.fields import StringField
 
 from app import db
-from app.models import Post, Tag
+from app.models import Post, Tag, Setting
 from app.admin.forms import PostForm
 from app.utils.forms import RedirectForm
 from app.utils.fields import TagListField
@@ -96,3 +96,13 @@ class TestRedirectForm(AppTestCase):
         self.assertEqual(obj.bar, 'foo')
         with self.assertRaises(AttributeError):
             obj.next
+
+
+class TestAppSettings(AppTestCase):
+    def test_setting_creation(self):
+        self.app.config['SETTINGS']['foo'] = 'bar'
+        setting = Setting.query.filter_by(name='foo').first()
+        self.assertEqual(setting.value, 'bar')
+
+        self.app.config['SETTINGS']['foo'] = 'foobar'
+        self.assertEqual(setting.value, 'foobar')
