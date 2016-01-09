@@ -40,6 +40,14 @@ def create_app(config_name):
     security.init_app(app, user_datastore)
     whoosh_index(app, Post)
 
+    from app.utils.settings import AppSettings
+    with app.app_context():
+        app.config['SETTINGS'] = AppSettings()
+
+    @app.context_processor
+    def inject_settings():
+        return {'settings': app.config['SETTINGS']}
+
     from app.main.views import main
     from app.admin.views import admin
     app.register_blueprint(main)
