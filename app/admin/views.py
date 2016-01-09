@@ -75,7 +75,7 @@ def preview_post():
 
 @admin.route('/settings', methods=['GET', 'POST'])
 def edit_settings():
-    form = SettingsForm(obj=current_app.config['SETTINGS'])
+    form = SettingsForm(**current_app.config['SETTINGS'])
     if form.validate_on_submit():
         form.populate_obj(current_app.config['SETTINGS'])
         flash('Updated settings.', 'success')
