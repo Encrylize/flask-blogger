@@ -34,3 +34,8 @@ class RedirectForm(Form):
 
         target = get_redirect_target()
         return redirect(target or url_for(endpoint, **values))
+
+    def populate_obj(self, obj):
+        for name, field in self._fields.items():
+            if name != 'next':
+                field.populate_obj(obj, name)
