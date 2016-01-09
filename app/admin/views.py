@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, redirect, url_for, current_app, fl
 from flask_security import current_user
 from sqlalchemy import desc
 
-from app import db
 from app.models import Post, Tag
 from app.admin.forms import PostForm, SettingsForm
 from app.utils.helpers import get_redirect_target
@@ -76,9 +75,11 @@ def preview_post():
 
 @admin.route('/settings', methods=['GET', 'POST'])
 def edit_settings():
-    form = SettingsForm()
+    form = SettingsForm(obj=current_app.config['SETTINGS'])
     if form.validate_on_submit():
-        pass
+        form.populate_obj(current_app.config['SETTINGS'])
+        flash('Updated settings.', 'success')
+        return form.redirect(url_for('admin.index'))
 
     return render_template('admin/settings.html', form=form)
 
