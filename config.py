@@ -7,8 +7,6 @@ class Config:
     """ Base configuration with values used in all configurations. """
 
     SECRET_KEY = os.getenv('SECRET_KEY')
-    BLOG_NAME = os.getenv('BLOG_NAME', 'Unnamed Blog')
-    POSTS_PER_PAGE = os.getenv('POSTS_PER_PAGE', 20)
 
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True

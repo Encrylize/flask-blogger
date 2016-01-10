@@ -18,7 +18,8 @@ def index():
 @admin.route('/posts')
 @admin.route('/posts/<int:page>')
 def show_posts(page=1):
-    posts = Post.query.order_by(desc(Post.timestamp)).paginate(page, current_app.config.get('POSTS_PER_PAGE'))
+    posts = Post.query.order_by(desc(Post.timestamp)).paginate(
+                page, current_app.config['SETTINGS'].get('posts_per_page'))
     return render_template('admin/posts.html', posts=posts)
 
 
