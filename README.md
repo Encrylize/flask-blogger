@@ -1,6 +1,6 @@
 # INTRODUCTION
 
-Flask-Blogger is a web blogging software written with Flask and it's extensions. 
+Flask-Blogger is a web blogging software written with Flask and its extensions. 
 It is still very WIP and barebones.
 
 ## FEATURES
