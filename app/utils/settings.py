@@ -5,6 +5,7 @@ class AppSettings(dict):
     def __init__(self):
         super().__init__()
         self.update({setting.name: setting.value for setting in Setting.query.all()})
+        self.__setitem__('posts_per_page', int(self.__getitem__('posts_per_page')))
 
     def __setitem__(self, key, value):
         super().__setitem__(key, value)
