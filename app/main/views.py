@@ -60,8 +60,9 @@ def show_search_results(query, page=1):
 
 
 @main.context_processor
-def context_processor():
-    return {'tags': Tag.query.join(tags_posts).group_by(Tag).order_by(desc(db.func.count(tags_posts.c.post_id))).all()}
+def inject_tags():
+    tags = Tag.query.join(tags_posts).group_by(Tag).order_by(desc(db.func.count(tags_posts.c.post_id))).all()
+    return dict(tags=tags)
 
 
 @main.before_request
