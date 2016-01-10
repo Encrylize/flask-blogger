@@ -66,5 +66,5 @@ def inject_tags():
 
 
 @main.before_request
-def before_request():
+def set_globals():
     g.search_form = SearchForm()
