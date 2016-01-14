@@ -16,4 +16,6 @@ class CRUDMixin:
         db.session.commit()
 
     def __repr__(self):
-        return '<%s %d>' % (self.__class__.__name__, self.id)
+        if self.id:
+            return '<%s %d>' % (self.__class__.__name__, self.id)
+        return '<%s>' % self.__class__.__name__
