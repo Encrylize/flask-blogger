@@ -3,6 +3,7 @@ import os
 import coverage
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell
+from flask_security.utils import encrypt_password
 
 from app import create_app, db, user_datastore
 from app.models import Post, Tag, User, Setting
@@ -50,6 +51,7 @@ def test(coverage=False):
 @manager.command
 def createadmin(email, password):
     """ Creates an admin user. """
+    password = encrypt_password(password)
     user_datastore.create_user(email=email, password=password)
     db.session.commit()
 
