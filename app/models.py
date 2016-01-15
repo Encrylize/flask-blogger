@@ -5,7 +5,7 @@ from slugify import slugify
 from sqlalchemy import event
 from sqlalchemy.orm import Session
 
-from app import db
+from app import cache, db
 from app.utils.database import CRUDMixin
 
 roles_users = db.Table('roles_users',
@@ -74,6 +74,11 @@ class Setting(db.Model, CRUDMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     value = db.Column(db.String(1000), nullable=False)
+
+    @classmethod
+    @cache.memoize()
+    def get_dict(cls):
+        return {setting.name: setting.value for setting in cls.query.all()}
 
 
 @event.listens_for(Session, 'after_flush')
