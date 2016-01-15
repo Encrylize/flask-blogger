@@ -1,6 +1,6 @@
 import unittest
 
-from app import create_app, configure_settings, db
+from app import create_app, db
 
 
 class AppTestCase(unittest.TestCase):
@@ -9,7 +9,10 @@ class AppTestCase(unittest.TestCase):
         self.app_ctx = self.app.app_context()
         self.app_ctx.push()
         db.create_all()
-        configure_settings(self.app)
+
+        # Temporary. Will be removed once default settings has been set up.
+        self.app.config['posts_per_page'] = '10'
+        self.app.config['blog_name'] = 'flask-blogger'
 
     def tearDown(self):
         db.session.remove()
