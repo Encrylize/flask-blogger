@@ -28,6 +28,8 @@ class DevelopmentConfig(Config):
 
     WHOOSH_BASE = os.path.join(basedir, 'dev_search_database')
 
+    CACHE_TYPE = 'simple'
+
 
 class TestingConfig(Config):
     """
@@ -40,6 +42,8 @@ class TestingConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DATABASE_URL')
+
+    CACHE_TYPE = 'simple'
 
 
 config = {

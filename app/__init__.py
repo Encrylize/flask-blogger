@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cache import Cache
 from flask_login import LoginManager
 from flask_misaka import Misaka
 from flask_moment import Moment
@@ -8,6 +9,7 @@ from flask_whooshalchemy import whoosh_index
 
 from config import config
 
+cache = Cache()
 db = SQLAlchemy()
 lm = LoginManager()
 markdown = Misaka()
@@ -36,6 +38,7 @@ def create_app(config_name):
 
     db.init_app(app)
     lm.init_app(app)
+    cache.init_app(app, app.config)
     markdown.init_app(app)
     moment.init_app(app)
     security.init_app(app, user_datastore)
