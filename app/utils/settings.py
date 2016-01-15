@@ -1,25 +1,19 @@
+from app import cache
 from app.models import Setting
+from app.utils.helpers import get_or_create
 
 
 class AppSettings(dict):
-    def __init__(self):
-        super().__init__()
-        self.update({setting.name: setting.value for setting in Setting.query.all()})
-
-        try:
-            self.__setitem__('posts_per_page', int(self.__getitem__('posts_per_page')))
-        except KeyError:
-            pass
-
     def __setitem__(self, key, value):
-        super().__setitem__(key, value)
-
-        setting = Setting.query.filter_by(name=key).first()
-        if setting is not None:
-            setting.value = value
-        else:
-            setting = Setting(name=key, value=value)
+        setting, created = get_or_create(Setting, name=key)
+        setting.value = value
         setting.save()
+
+        # Delete the Setting dictionary cache
+        cache.delete_memoized(Setting.get_dict)
 
     def __setattr__(self, key, value):
         self.__setitem__(key, value)
+
+    def __getitem__(self, key):
+        return Setting.get_dict()[key]

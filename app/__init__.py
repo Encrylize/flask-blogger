@@ -44,26 +44,6 @@ def create_app(config_name):
     security.init_app(app, user_datastore)
     whoosh_index(app, Post)
 
-    if not app.config['TESTING']:
-        configure_settings(app)
-
-    from app.main.views import main
-    from app.admin.views import admin
-    app.register_blueprint(main)
-    app.register_blueprint(admin, url_prefix='/admin')
-
-    return app
-
-
-def configure_settings(app):
-    """
-    Configures the settings for an app.
-
-    Args:
-        app: The Flask app object to attach the settings to.
-
-    """
-
     with app.app_context():
         app.config['SETTINGS'] = AppSettings()
 
@@ -71,3 +51,9 @@ def configure_settings(app):
     def inject_settings():
         return dict(settings=app.config['SETTINGS'])
 
+    from app.main.views import main
+    from app.admin.views import admin
+    app.register_blueprint(main)
+    app.register_blueprint(admin, url_prefix='/admin')
+
+    return app
