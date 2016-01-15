@@ -11,8 +11,8 @@ class AppTestCase(unittest.TestCase):
         db.create_all()
 
         # Temporary. Will be removed once default settings has been set up.
-        self.app.config['posts_per_page'] = '10'
-        self.app.config['blog_name'] = 'flask-blogger'
+        self.app.config["SETTINGS"]['posts_per_page'] = '10'
+        self.app.config["SETTINGS"]['blog_name'] = 'flask-blogger'
 
     def tearDown(self):
         db.session.remove()
