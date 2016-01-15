@@ -77,7 +77,7 @@ class Setting(db.Model, CRUDMixin):
 
     @classmethod
     @cache.memoize()
-    def get_dict(cls):
+    def as_dict(cls):
         return {setting.name: setting.value for setting in cls.query.all()}
 
 
