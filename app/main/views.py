@@ -13,7 +13,7 @@ main = Blueprint('main', __name__)
 @main.route('/index/<int:page>')
 def index(page=1):
     posts = Post.query.order_by(desc(Post.timestamp)).paginate(
-                page, current_app.config['SETTINGS'].get('posts_per_page'))
+                page, int(current_app.config['SETTINGS']['posts_per_page']))
 
     return render_template('main/index.html', title='Home', posts=posts)
 
@@ -37,7 +37,7 @@ def show_tag(id, slug=None, page=1):
         return redirect(url_for('main.show_tag', id=id, slug=tag.slug))
 
     posts = tag.posts.order_by(desc(Post.timestamp)).paginate(
-                page, current_app.config['SETTINGS'].get('posts_per_page'))
+                page, int(current_app.config['SETTINGS']['posts_per_page']))
 
     return render_template('main/tag.html', posts=posts, tag=tag)
 
@@ -54,7 +54,7 @@ def search():
 @main.route('/search_results/<query>/<int:page>')
 def show_search_results(query, page=1):
     posts = Post.query.whoosh_search(query).order_by(desc(Post.timestamp)).paginate(
-                page, current_app.config['SETTINGS'].get('posts_per_page'))
+                page, int(current_app.config['SETTINGS']['posts_per_page']))
 
     return render_template('main/search_results.html', posts=posts, query=query)
 
