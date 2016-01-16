@@ -18,6 +18,10 @@ security = Security()
 
 from app.models import Post, User, Role
 from app.utils.settings import AppSettings
+
+from app.main.views import main
+from app.admin.views import admin
+
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
 
@@ -26,7 +30,7 @@ def create_app(config_name):
     Initializes a Flask app.
 
     Args:
-        config_name: The configuration object to use.
+        config_name: The configuration class to use.
 
     Returns:
         The Flask app object.
@@ -36,13 +40,21 @@ def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
 
-    db.init_app(app)
-    lm.init_app(app)
-    cache.init_app(app, app.config)
-    markdown.init_app(app)
-    moment.init_app(app)
-    security.init_app(app, user_datastore)
-    whoosh_index(app, Post)
+    configure_extensions(app)
+    configure_settings(app)
+    configure_blueprints(app)
+
+    return app
+
+
+def configure_settings(app):
+    """
+    Configures the AppSettings interface for an app.
+
+    Args:
+        app: The Flask app object to attach the interface to.
+
+    """
 
     with app.app_context():
         app.config['SETTINGS'] = AppSettings()
@@ -51,9 +63,33 @@ def create_app(config_name):
     def inject_settings():
         return dict(settings=app.config['SETTINGS'])
 
-    from app.main.views import main
-    from app.admin.views import admin
+
+def configure_extensions(app):
+    """
+    Configures the Flask extensions for an app.
+
+    Args:
+        app: The Flask app object to initialize the extensions with.
+
+    """
+
+    db.init_app(app)
+    lm.init_app(app)
+    cache.init_app(app, app.config)
+    markdown.init_app(app)
+    moment.init_app(app)
+    security.init_app(app, user_datastore)
+    whoosh_index(app, Post)
+
+
+def configure_blueprints(app):
+    """
+    Configures the blueprints for an app.
+
+    Args:
+        app: The Flask app object to register the blueprints on.
+
+    """
+
     app.register_blueprint(main)
     app.register_blueprint(admin, url_prefix='/admin')
-
-    return app
