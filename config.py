@@ -14,6 +14,11 @@ class Config:
     SECURITY_PASSWORD_HASH = 'bcrypt'
     SECURITY_PASSWORD_SALT = os.getenv('SECRET_KEY')
 
+    DEFAULT_SETTINGS = {
+        'blog_name': 'Flask-Blogger',
+        'posts_per_page': '10'
+    }
+
 
 class DevelopmentConfig(Config):
     """

@@ -6,6 +6,7 @@ from flask_moment import Moment
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_sqlalchemy import SQLAlchemy
 from flask_whooshalchemy import whoosh_index
+from sqlalchemy.exc import ProgrammingError
 
 from config import config
 
@@ -58,6 +59,12 @@ def configure_settings(app):
 
     with app.app_context():
         app.config['SETTINGS'] = AppSettings()
+        try:
+            populate_settings(app)
+        except ProgrammingError:
+            # Settings table does not exist.
+            # Catch the error, so Flask-Migrate can still function.
+            pass
 
     @app.context_processor
     def inject_settings():
@@ -93,3 +100,19 @@ def configure_blueprints(app):
 
     app.register_blueprint(main)
     app.register_blueprint(admin, url_prefix='/admin')
+
+
+def populate_settings(app):
+    """
+    Populates the settings with defaults from the app config.
+    Settings that are already set will not be overridden.
+
+    Args:
+        app: The Flask app object.
+
+    """
+
+    for name, value in app.config['DEFAULT_SETTINGS'].items():
+        if name not in app.config['SETTINGS'].keys():
+            app.config['SETTINGS'][name] = value
+    app.config['SETTINGS']['installed'] = 'true'
