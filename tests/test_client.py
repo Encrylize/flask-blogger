@@ -16,7 +16,7 @@ class TestAdminBlueprint(ClientTestCase):
         super().setUp()
 
         # Create user and log in
-        user_datastore.create_user(email='foo@bar.com', password='foobar')
+        user_datastore.create_user(email='foo@bar.com', name='Foo Bar', password='foobar')
         self.client.post(url_for('security.login'), data={
             'email': 'foo@bar.com',
             'password': 'foobar'

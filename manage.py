@@ -49,10 +49,10 @@ def test(coverage=False):
 
 
 @manager.command
-def createadmin(email, password):
+def createadmin(email, name, password):
     """ Creates an admin user. """
     password = encrypt_password(password)
-    user_datastore.create_user(email=email, password=password)
+    user_datastore.create_user(email=email, name=name, password=password)
     db.session.commit()
 
 
