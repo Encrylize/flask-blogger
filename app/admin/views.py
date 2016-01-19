@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, current_app, fl
 from flask_security import current_user
 from sqlalchemy import desc
 
-from app.models import Post, Tag
+from app.models import Post, Tag, User
 from app.admin.forms import PostForm, SettingsForm
 from app.utils.helpers import get_redirect_target
 
@@ -83,6 +83,13 @@ def edit_settings():
         return form.redirect(url_for('admin.index'))
 
     return render_template('admin/settings.html', form=form)
+
+
+@admin.route('/users')
+@admin.route('/users/<int:page>')
+def show_users(page=1):
+    users = User.query.paginate(page, int(current_app.config['SETTINGS']['posts_per_page']))
+    return render_template('admin/users.html', users=users)
 
 
 @admin.before_request
