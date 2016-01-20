@@ -25,7 +25,7 @@ def show_posts(page=1):
 
 @admin.route('/new/post', methods=['GET', 'POST'])
 def new_post():
-    form = PostForm(**session.pop('post_preview', {}))
+    form = PostForm()
     if form.validate_on_submit():
         form.save()
         flash('Added post.', 'success')
@@ -43,9 +43,6 @@ def edit_post(id, slug=None):
         return redirect(url_for('admin.edit_post', id=id, slug=post.slug))
 
     form = PostForm(obj=post)
-    for field, value in session.pop('post_preview', {}).items():
-        setattr(getattr(form, field), 'data', value)
-
     if form.validate_on_submit():
         form.save()
         flash('Edited post.', 'success')

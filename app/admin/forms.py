@@ -1,3 +1,4 @@
+from flask import session
 from wtforms.fields import StringField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, ValidationError
 
@@ -16,6 +17,9 @@ class PostForm(RedirectForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.obj = kwargs.get('obj')
+
+        for field, value in session.pop('post_preview', {}).items():
+            self._fields[field].data = value
 
     def validate_on_submit(self):
         if not super().validate_on_submit():
