@@ -16,7 +16,7 @@ class PostForm(RedirectForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.obj = kwargs.get('obj')
+        self.post = kwargs.get('obj', Post())
 
         for field, value in session.pop('post_preview', {}).items():
             self._fields[field].data = value
@@ -41,12 +41,9 @@ class PostForm(RedirectForm):
 
         """
 
-        if not self.obj:
-            self.obj = Post()
-
-        self.populate_obj(self.obj)
-        self.obj.tags = [get_or_create(Tag, name=tag)[0] for tag in set(self.tags.data)]
-        return self.obj.save()
+        self.populate_obj(self.post)
+        self.post.tags = [get_or_create(Tag, name=tag)[0] for tag in set(self.tags.data)]
+        return self.post.save()
 
     def populate_obj(self, obj):
         for name, field in self._fields.items():
