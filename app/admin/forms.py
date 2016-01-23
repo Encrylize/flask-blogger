@@ -59,6 +59,11 @@ class SettingsForm(RedirectForm):
         kwargs.update(dict(current_app.config['SETTINGS']))
         super().__init__(*args, **kwargs)
 
+    def save(self):
+        """ Saves the settings. """
+
+        self.populate_obj(current_app.config['SETTINGS'])
+
     def validate_posts_per_page(self, field):
         if field.data < 1:
             raise ValidationError('This field must have a value of at least 1.')

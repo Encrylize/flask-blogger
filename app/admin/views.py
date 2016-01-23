@@ -46,7 +46,6 @@ def edit_post(id, slug=None):
     if form.validate_on_submit():
         form.save()
         flash('Edited post.', 'success')
-
         return form.redirect(url_for('admin.index'))
 
     return render_template('admin/post_form.html', form=form)
@@ -75,7 +74,7 @@ def preview_post():
 def edit_settings():
     form = SettingsForm()
     if form.validate_on_submit():
-        form.populate_obj(current_app.config['SETTINGS'])
+        form.save()
         flash('Updated settings.', 'success')
         return form.redirect(url_for('admin.index'))
 
