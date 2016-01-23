@@ -1,4 +1,4 @@
-from flask import session
+from flask import session, current_app
 from wtforms.fields import StringField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, ValidationError
 
@@ -54,6 +54,10 @@ class PostForm(RedirectForm):
 class SettingsForm(RedirectForm):
     blog_name = StringField('Blog name', [DataRequired()])
     posts_per_page = IntegerField('Posts per page', [DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        kwargs.update(dict(current_app.config['SETTINGS']))
+        super().__init__(*args, **kwargs)
 
     def validate_posts_per_page(self, field):
         if field.data < 1:
