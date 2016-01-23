@@ -73,7 +73,7 @@ class Tag(db.Model, CRUDMixin):
 class Setting(db.Model, CRUDMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    value = db.Column(db.String(1000), nullable=False)
+    value = db.Column(db.PickleType, nullable=False)
 
     @classmethod
     @cache.memoize()

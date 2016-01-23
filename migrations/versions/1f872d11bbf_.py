@@ -19,7 +19,7 @@ def upgrade():
     op.create_table('setting',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=100), nullable=False),
-    sa.Column('value', sa.String(length=1000), nullable=False),
+    sa.Column('value', sa.PickleType(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     ### end Alembic commands ###

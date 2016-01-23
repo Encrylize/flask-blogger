@@ -16,7 +16,7 @@ class Config:
 
     DEFAULT_SETTINGS = {
         'blog_name': 'Flask-Blogger',
-        'posts_per_page': '10'
+        'posts_per_page': 10
     }
 
 

@@ -115,4 +115,4 @@ def populate_settings(app):
     for name, value in app.config['DEFAULT_SETTINGS'].items():
         if name not in app.config['SETTINGS'].keys():
             app.config['SETTINGS'][name] = value
-    app.config['SETTINGS']['installed'] = 'true'
+    app.config['SETTINGS']['installed'] = True
