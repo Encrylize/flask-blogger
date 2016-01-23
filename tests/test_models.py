@@ -11,7 +11,7 @@ from tests.general import AppTestCase
 class TestPost(AppTestCase):
     @freeze_time(datetime.now())
     def test_initialization(self):
-        post = Post(title='title ', short_text='short text', long_text='long text').save()
+        post = Post(title='title ', short_text='short text', long_text='long text')
 
         self.assertEqual(datetime.now(), post.timestamp)
 
@@ -21,7 +21,8 @@ class TestPost(AppTestCase):
         db.session.add_all([post_1, post_2])
         db.session.commit()
 
-        tag_1, tag_2 = Tag(name='tag 1'), Tag(name='tag 2')
+        tag_1 = Tag(name='tag 1')
+        tag_2 = Tag(name='tag 2')
         post_1.tags.extend([tag_1, tag_2])
         post_2.tags.append(tag_1)
 
@@ -32,15 +33,16 @@ class TestPost(AppTestCase):
         self.assertNotIn(post_2, tag_2.posts.all())
 
     def test_save(self):
-        post_1 = Post(title='Hello World! ß', short_text='foobar').save()
+        post_1 = Post(title='Hello World! ß', short_text='foobar')
+        post_1.save()
 
-        self.assertIsNotNone(Post.query.first())
         self.assertEqual(post_1.slug, 'hello-world-ss')
 
     def test_short_text_or_long_text_is_not_null(self):
         post_1 = Post(title='post 1')
+        db.session.add(post_1)
 
-        self.assertRaises(IntegrityError, post_1.save)
+        self.assertRaises(IntegrityError, db.session.commit)
 
 
 class TestTag(AppTestCase):
