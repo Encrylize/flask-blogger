@@ -19,6 +19,12 @@ class AppTestCase(unittest.TestCase):
         self.app_ctx.pop()
 
 
+class ClientTestCase(AppTestCase):
+    def setUp(self):
+        super().setUp()
+        self.client = self.app.test_client(use_cookies=True)
+
+
 class DummyPostData(dict):
     def getlist(self, key):
         v = self[key]

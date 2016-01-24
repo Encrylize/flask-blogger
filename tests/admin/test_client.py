@@ -2,13 +2,7 @@ from flask import url_for
 
 from app import db, user_datastore
 from app.models import Post, Tag
-from tests.general import AppTestCase
-
-
-class ClientTestCase(AppTestCase):
-    def setUp(self):
-        super().setUp()
-        self.client = self.app.test_client(use_cookies=True)
+from tests.general import ClientTestCase
 
 
 class TestAdminBlueprint(ClientTestCase):
@@ -106,23 +100,3 @@ class TestAdminBlueprint(ClientTestCase):
 
         with self.client.session_transaction() as session:
             self.assertIsNone(session.get('post_preview'))
-
-
-class TestMainBlueprint(ClientTestCase):
-    def test_show_post(self):
-        post = Post(title='foo', short_text='bar', long_text='baz').save()
-        response = self.client.get(url_for('main.show_post', id=post.id), follow_redirects=True)
-
-        self.assertIn(b'foo', response.data)
-        self.assertIn(b'bar', response.data)
-        self.assertIn(b'baz', response.data)
-
-    def test_show_tag(self):
-        post = Post(title='foo', short_text='bar', long_text='baz').save()
-        tag = Tag(name='qux')
-        post.tags.append(tag)
-
-        response = self.client.get(url_for('main.show_tag', id=1), follow_redirects=True)
-
-        self.assertIn(b'foo', response.data)
-        self.assertIn(b'bar', response.data)
