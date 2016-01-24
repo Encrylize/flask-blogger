@@ -14,6 +14,7 @@ class TestPostForm(AppTestCase):
         form_2 = PostForm(DummyPostData(title='foo', short_text='bar', tags='foo, bar, someothertag'))
         form_2.save()
 
+        # Assert that only a single tag ('someothertag') has been added
         self.assertEqual(len(Tag.query.all()), 4)
 
         form_3 = PostForm(obj=post_1)
@@ -25,4 +26,5 @@ class TestPostForm(AppTestCase):
 
         self.assertIsNotNone(tag_1)
         self.assertNotIn(tag_2, post_1.tags.all())
+        # Assert that the 'duplicate' tag has only been added once
         self.assertEqual(Tag.query.filter_by(name='duplicate').count(), 1)
