@@ -21,8 +21,8 @@ from app.main.models import Post
 from app.admin.models import User, Role
 from app.utils.settings import AppSettings
 
-from app.main.views import main
-from app.admin.views import admin
+from app.main import main
+from app.admin import admin
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 

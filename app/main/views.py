@@ -1,11 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, current_app, g
+from flask import render_template, redirect, url_for, current_app, g
 from sqlalchemy import desc
 
 from app import db
+from app.main import main
 from app.main.forms import SearchForm
 from app.main.models import Post, Tag, tags_posts
-
-main = Blueprint('main', __name__)
 
 
 @main.route('/')
