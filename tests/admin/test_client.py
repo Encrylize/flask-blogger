@@ -105,3 +105,10 @@ class TestAdminBlueprint(ClientTestCase):
         with self.client.session_transaction() as session:
             # Assert that the post_preview data was deleted
             self.assertIsNone(session.get('post_preview'))
+
+    def test_edit_settings(self):
+        form_data = dict(self.app.config['SETTINGS'])
+        form_data['blog_name'] = 'foobar'
+        self.client.post(url_for('admin.edit_settings'), data=form_data)
+
+        self.assertEqual(self.app.config['SETTINGS']['blog_name'], 'foobar')
