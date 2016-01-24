@@ -1,6 +1,6 @@
 from app import db
 from app.utils.database import CRUDMixin
-from tests.general import AppTestCase
+from tests import AppTestCase
 
 
 class TestCRUDMixin(AppTestCase):

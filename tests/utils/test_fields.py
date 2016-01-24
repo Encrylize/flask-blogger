@@ -3,7 +3,7 @@ from wtforms import Form
 from app import db
 from app.main.models import Post, Tag
 from app.utils.fields import TagListField
-from tests.general import AppTestCase, DummyPostData
+from tests import AppTestCase, DummyPostData
 
 
 class TestTagListField(AppTestCase):

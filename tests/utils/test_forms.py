@@ -1,7 +1,7 @@
 from wtforms.fields import StringField
 
 from app.utils.forms import RedirectForm
-from tests.general import AppTestCase
+from tests import AppTestCase
 
 
 class TestRedirectForm(AppTestCase):

@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app import db
 from app.main.models import Post, Tag
-from tests.general import AppTestCase
+from tests import AppTestCase
 
 
 class TestPost(AppTestCase):

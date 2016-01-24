@@ -3,7 +3,7 @@ from flask import url_for
 from app import db
 from app.main.models import Post
 from app.utils.helpers import get_or_create, get_redirect_target, is_safe_url
-from tests.general import AppTestCase
+from tests import AppTestCase
 
 
 class TestHelpers(AppTestCase):

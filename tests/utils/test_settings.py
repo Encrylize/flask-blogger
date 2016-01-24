@@ -1,6 +1,6 @@
 from app import db, cache
 from app.admin.models import Setting
-from tests.general import AppTestCase
+from tests import AppTestCase
 
 
 class TestAppSettings(AppTestCase):

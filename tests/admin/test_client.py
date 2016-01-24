@@ -2,7 +2,7 @@ from flask import url_for
 
 from app import db, user_datastore
 from app.main.models import Post, Tag
-from tests.general import ClientTestCase
+from tests import ClientTestCase
 
 
 class TestAdminBlueprint(ClientTestCase):
