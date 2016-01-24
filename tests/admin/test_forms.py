@@ -1,5 +1,5 @@
 from app.models import Tag
-from app.admin.forms import PostForm
+from app.admin.forms import PostForm, SettingsForm
 from tests.general import AppTestCase, DummyPostData
 
 
@@ -28,3 +28,24 @@ class TestPostForm(AppTestCase):
         self.assertNotIn(tag_2, post_1.tags.all())
         # Assert that the 'duplicate' tag has only been added once
         self.assertEqual(Tag.query.filter_by(name='duplicate').count(), 1)
+
+
+class TestSettingsForm(AppTestCase):
+    def test_initialization(self):
+        form = SettingsForm()
+
+        # Loop over each setting and assert that the field with the corresponding name has the same value
+        for key, value in self.app.config['SETTINGS'].items():
+            if key == 'installed':
+                continue
+
+            field = getattr(form, key)
+
+            self.assertEqual(field.data, value)
+
+    def test_save(self):
+        form = SettingsForm()
+        form.blog_name.data = 'foobar'
+        form.save()
+
+        self.assertEqual(self.app.config['SETTINGS']['blog_name'], 'foobar')
