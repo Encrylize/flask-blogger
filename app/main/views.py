@@ -3,7 +3,7 @@ from sqlalchemy import desc
 
 from app import db
 from app.main.forms import SearchForm
-from app.models import Post, Tag, tags_posts
+from app.main.models import Post, Tag, tags_posts
 
 main = Blueprint('main', __name__)
 

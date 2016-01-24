@@ -4,7 +4,7 @@ from freezegun import freeze_time
 from sqlalchemy.exc import IntegrityError
 
 from app import db
-from app.models import Post, Tag
+from app.main.models import Post, Tag
 from tests.general import AppTestCase
 
 

@@ -1,7 +1,7 @@
 from flask import url_for
 
 from app import db, user_datastore
-from app.models import Post, Tag
+from app.main.models import Post, Tag
 from tests.general import ClientTestCase
 
 

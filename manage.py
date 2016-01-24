@@ -6,7 +6,8 @@ from flask_script import Manager, Shell
 from flask_security.utils import encrypt_password
 
 from app import create_app, db, user_datastore
-from app.models import Post, Tag, User, Setting
+from app.main.models import Post, Tag
+from app.admin.models import User, Setting
 from config import basedir
 
 app = create_app(os.getenv('CONFIG', 'default'))

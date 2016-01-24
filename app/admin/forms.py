@@ -2,7 +2,7 @@ from flask import session, current_app
 from wtforms.fields import StringField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, ValidationError
 
-from app.models import Post, Tag
+from app.main.models import Post, Tag
 from app.utils.helpers import get_or_create
 from app.utils.forms import RedirectForm
 from app.utils.fields import TagListField

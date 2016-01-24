@@ -1,5 +1,5 @@
 from app import db, cache
-from app.models import Setting
+from app.admin.models import Setting
 from tests.general import AppTestCase
 
 

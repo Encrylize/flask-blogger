@@ -1,7 +1,7 @@
 from collections import MutableMapping
 
 from app import cache
-from app.models import Setting
+from app.admin.models import Setting
 from app.utils.helpers import get_or_create
 
 

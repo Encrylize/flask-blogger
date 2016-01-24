@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, current_app, fl
 from flask_security import current_user
 from sqlalchemy import desc
 
-from app.models import Post, Tag
+from app.main.models import Post, Tag
 from app.admin.forms import PostForm, SettingsForm
 from app.utils.helpers import get_redirect_target
 

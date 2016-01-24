@@ -1,35 +1,15 @@
 from datetime import datetime
 
-from flask_security import UserMixin, RoleMixin
 from slugify import slugify
 from sqlalchemy import event
 from sqlalchemy.orm import Session
 
-from app import cache, db
+from app import db
 from app.utils.database import CRUDMixin
 
-roles_users = db.Table('roles_users',
-                       db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-                       db.Column('role_id', db.Integer, db.ForeignKey('role.id')))
 tags_posts = db.Table('tags_posts',
                       db.Column('post_id', db.Integer, db.ForeignKey('post.id', ondelete='cascade')),
                       db.Column('tag_id', db.Integer, db.ForeignKey('tag.id', ondelete='cascade')))
-
-
-class Role(db.Model, RoleMixin, CRUDMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    description = db.Column(db.String(255))
-
-
-class User(db.Model, UserMixin, CRUDMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-    active = db.Column(db.Boolean)
-    roles = db.relationship('Role', secondary=roles_users,
-                            backref=db.backref('users', lazy='dynamic'))
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
 
 class Post(db.Model, CRUDMixin):
@@ -68,17 +48,6 @@ class Tag(db.Model, CRUDMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60), nullable=False)
     slug = db.Column(db.String(80), nullable=False)
-
-
-class Setting(db.Model, CRUDMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    value = db.Column(db.PickleType, nullable=False)
-
-    @classmethod
-    @cache.memoize()
-    def as_dict(cls):
-        return {setting.name: setting.value for setting in cls.query.all()}
 
 
 @event.listens_for(Session, 'after_flush')

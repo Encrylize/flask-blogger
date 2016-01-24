@@ -1,4 +1,4 @@
-from app.models import Tag
+from app.main.models import Tag
 from app.admin.forms import PostForm, SettingsForm
 from tests.general import AppTestCase, DummyPostData
 

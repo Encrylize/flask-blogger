@@ -17,7 +17,8 @@ markdown = Misaka()
 moment = Moment()
 security = Security()
 
-from app.models import Post, User, Role
+from app.main.models import Post
+from app.admin.models import User, Role
 from app.utils.settings import AppSettings
 
 from app.main.views import main
