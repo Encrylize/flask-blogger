@@ -7,7 +7,7 @@ from app.utils.helpers import get_or_create
 
 class AppSettings(MutableMapping):
     def __setitem__(self, key, value):
-        setting, created = get_or_create(Setting, name=key)
+        setting, created = get_or_create(Setting, key=key)
         setting.value = value
         setting.save()
 

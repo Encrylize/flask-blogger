@@ -18,7 +18,7 @@ moment = Moment()
 security = Security()
 
 from app.main.models import Post
-from app.admin.models import User, Role
+from app.admin.models import User, Role, Setting
 from app.utils.settings import AppSettings
 
 from app.main import main
@@ -113,7 +113,8 @@ def populate_settings(app):
 
     """
 
-    for name, value in app.config['DEFAULT_SETTINGS'].items():
-        if name not in app.config['SETTINGS'].keys():
-            app.config['SETTINGS'][name] = value
+    for setting in app.config['DEFAULT_SETTINGS']:
+        if setting['key'] not in app.config['SETTINGS'].keys():
+            setting = Setting(**setting)
+            setting.save()
     app.config['SETTINGS']['installed'] = True

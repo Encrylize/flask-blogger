@@ -25,11 +25,11 @@ class User(db.Model, UserMixin, CRUDMixin):
 
 
 class Setting(db.Model, CRUDMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    key = db.Column(db.String(100), primary_key=True)
+    name = db.Column(db.String(100))
     value = db.Column(db.PickleType, nullable=False)
 
     @classmethod
     @cache.memoize()
     def as_dict(cls):
-        return {setting.name: setting.value for setting in cls.query.all()}
+        return {setting.key: setting.value for setting in cls.query.all()}
