@@ -32,7 +32,7 @@ class Setting(db.Model, CRUDMixin):
     @classmethod
     @cache.memoize()
     def as_dict(cls):
-        return {setting.key: setting.value for setting in cls.query.all()}
+        return {setting.key: setting for setting in cls.query.all()}
 
     def __repr__(self):
         return '<Setting %s>' % self.key

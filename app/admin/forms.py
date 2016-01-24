@@ -1,7 +1,8 @@
 from flask import session, current_app
-from wtforms.fields import StringField, TextAreaField, IntegerField
+from wtforms.fields import StringField, TextAreaField, IntegerField, BooleanField
 from wtforms.validators import DataRequired, ValidationError
 
+from app.admin.models import Setting
 from app.main.models import Post, Tag
 from app.utils.helpers import get_or_create
 from app.utils.forms import RedirectForm
@@ -52,12 +53,25 @@ class PostForm(RedirectForm):
 
 
 class SettingsForm(RedirectForm):
-    blog_name = StringField('Blog name', [DataRequired()])
-    posts_per_page = IntegerField('Posts per page', [DataRequired()])
-
     def __init__(self, *args, **kwargs):
         kwargs.update(dict(current_app.config['SETTINGS']))
         super().__init__(*args, **kwargs)
+
+    @classmethod
+    def configure(cls):
+        """ Adds all settings with a name as form fields. """
+
+        for setting in Setting.as_dict().values():
+            if setting.name is None:
+                continue
+
+            FieldType = {int: IntegerField,
+                         str: StringField,
+                         bool: BooleanField}[type(setting.value)]
+            validators = {int: [DataRequired()],
+                          str: [DataRequired()],
+                          bool: []}[type(setting.value)]
+            setattr(cls, setting.key, FieldType(setting.name, validators))
 
     def save(self):
         """ Saves the settings. """

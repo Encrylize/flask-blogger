@@ -95,3 +95,8 @@ def clear_post_preview(response):
             pass
 
     return response
+
+
+@admin.before_app_first_request
+def configure_settings_form():
+    SettingsForm.configure()
