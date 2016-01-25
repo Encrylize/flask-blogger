@@ -7,7 +7,7 @@
       {{ form.hidden_tag() }}
 
       {% for field in form %}
-        {{ render_generic_field(field) }}
+        {{ render_generic_field(field, with_label=True) }}
       {% endfor %}
 
       <div class="form-group">
