@@ -16,4 +16,8 @@
   </div>
 {% endfor %}
 
-{{ render_pagination_buttons(posts) }}
+{% if request.endpoint == 'main.show_search_results' %}
+  {{ render_pagination_buttons(posts, query=query) }}
+{% else %}
+  {{ render_pagination_buttons(posts) }}
+{% endif %}

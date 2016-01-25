@@ -23,7 +23,7 @@
 {% macro render_pagination_buttons(pagination_object) %}
   <div class="pull-left">
     {% if pagination_object.has_prev %}
-      <a class="btn btn-primary paginate-btn" href="{{ url_for(request.endpoint, page=pagination_object.prev_num) }}"><< Previous</a>
+      <a class="btn btn-primary paginate-btn" href="{{ url_for(request.endpoint, page=pagination_object.prev_num, **kwargs) }}"><< Previous</a>
     {% else %}
       <a class="btn btn-default paginate-btn" href="#"><< Previous</a>
     {% endif %}
@@ -31,7 +31,7 @@
 
   <div class="pull-right">
     {% if pagination_object.has_next %}
-      <a class="btn btn-primary paginate-btn" href="{{ url_for(request.endpoint, page=pagination_object.next_num) }}">Next >></a>
+      <a class="btn btn-primary paginate-btn" href="{{ url_for(request.endpoint, page=pagination_object.next_num, **kwargs) }}">Next >></a>
     {% else %}
       <a class="btn btn-default paginate-btn" href="#">Next >></a>
     {% endif %}
