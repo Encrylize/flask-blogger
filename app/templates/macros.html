@@ -2,10 +2,10 @@
   <div class="form-group">
     <div class="col-md-offset-1 col-md-10">
       {% if with_label %}
-        {{ field.label(class="control-label") }}
-        {{ field(class="form-control", **kwargs) }}
+        {{ field.label(class='control-label') }}
+        {{ field(class='form-control', **kwargs) }}
       {% else %}
-        {{ field(class="form-control", placeholder=field.label.text, **kwargs) }}
+        {{ field(class='form-control', placeholder=field.label.text, **kwargs) }}
       {% endif %}
 
       {% for error in field.errors %}
@@ -28,7 +28,7 @@
   {% endwith %}
 {% endmacro %}
 
-{% macro show_message(message, category="info") %}
+{% macro show_message(message, category='info') %}
   <div class="alert alert-{{ category }} alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     {{ message }}
