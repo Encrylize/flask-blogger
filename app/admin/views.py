@@ -66,7 +66,7 @@ def preview_post():
     post = Post(**{k: v for k, v in session['post_preview'].items() if k not in ('next', 'tags')})
     post.tags = [Tag(name=tag) for tag in form.tags.data]
 
-    return render_template('admin/preview_post.html', post=post)
+    return render_template('admin/post_preview.html', post=post)
 
 
 @admin.route('/settings', methods=['GET', 'POST'])
