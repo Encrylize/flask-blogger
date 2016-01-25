@@ -11,7 +11,7 @@ from app.utils.helpers import get_redirect_target
 @admin.route('/')
 @admin.route('/index')
 def index():
-    return render_template('admin/index.html', title='Admin')
+    return render_template('admin/index.html', title='Home')
 
 
 @admin.route('/posts')
@@ -19,7 +19,7 @@ def index():
 def show_posts(page=1):
     posts = Post.query.order_by(desc(Post.timestamp)).paginate(
                 page, current_app.config['SETTINGS']['posts_per_page'])
-    return render_template('admin/posts.html', posts=posts)
+    return render_template('admin/posts.html', title='Posts', posts=posts)
 
 
 @admin.route('/new/post', methods=['GET', 'POST'])
@@ -31,7 +31,7 @@ def new_post():
 
         return form.redirect(url_for('admin.index'))
 
-    return render_template('admin/post_form.html', form=form)
+    return render_template('admin/post_form.html', title='New post', form=form)
 
 
 @admin.route('/edit/post/<int:id>')
@@ -47,7 +47,7 @@ def edit_post(id, slug=None):
         flash('Edited post.', 'success')
         return form.redirect(url_for('admin.index'))
 
-    return render_template('admin/post_form.html', form=form)
+    return render_template('admin/post_form.html', title='Edit post', form=form)
 
 
 @admin.route('/delete/post/<int:id>')
@@ -66,7 +66,7 @@ def preview_post():
     post = Post(**{k: v for k, v in session['post_preview'].items() if k not in ('next', 'tags')})
     post.tags = [Tag(name=tag) for tag in form.tags.data]
 
-    return render_template('admin/post_preview.html', post=post)
+    return render_template('admin/post_preview.html', title='Post preview', post=post)
 
 
 @admin.route('/settings', methods=['GET', 'POST'])
@@ -77,7 +77,7 @@ def edit_settings():
         flash('Updated settings.', 'success')
         return form.redirect(url_for('admin.index'))
 
-    return render_template('admin/settings.html', form=form)
+    return render_template('admin/settings.html', title='Settings', form=form)
 
 
 @admin.before_request

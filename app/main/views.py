@@ -24,7 +24,7 @@ def show_post(id, slug=None):
     if slug is None:
         return redirect(url_for('main.show_post', id=id, slug=post.slug))
 
-    return render_template('main/post.html', post=post)
+    return render_template('main/post.html', title=post.title, post=post)
 
 
 @main.route('/tag/<int:id>')
@@ -38,7 +38,7 @@ def show_tag(id, slug=None, page=1):
     posts = tag.posts.order_by(desc(Post.timestamp)).paginate(
                 page, current_app.config['SETTINGS']['posts_per_page'])
 
-    return render_template('main/tag.html', posts=posts, tag=tag)
+    return render_template('main/tag.html', title=tag.name, posts=posts, tag=tag)
 
 
 @main.route('/search', methods=['POST'])
@@ -55,7 +55,7 @@ def show_search_results(query, page=1):
     posts = Post.query.whoosh_search(query).order_by(desc(Post.timestamp)).paginate(
                 page, current_app.config['SETTINGS']['posts_per_page'])
 
-    return render_template('main/search_results.html', posts=posts, query=query)
+    return render_template('main/search_results.html', title='Search results', posts=posts, query=query)
 
 
 @main.context_processor
