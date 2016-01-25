@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import show_flashed_messages with context %}
 
 {% block layout %}
   <nav class="navbar navbar-inverse navbar-static-top">
@@ -37,7 +36,7 @@
   </nav>
 
   <div class="container">
-    {{ show_flashed_messages() }}
+    {% include 'flashed_messages.html' %}
     {% block content %}{% endblock %}
   </div>
 {% endblock %}

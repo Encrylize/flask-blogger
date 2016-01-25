@@ -33,6 +33,7 @@
   </nav>
 
   <div class="container">
+    {% include 'flashed_messages.html' %}
     <div class="row">
       <div class="col-md-9">
         {% block content %}{% endblock %}
