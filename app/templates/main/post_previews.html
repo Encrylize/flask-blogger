@@ -1,3 +1,5 @@
+{% from 'macros.html' import render_pagination_buttons %}
+
 {% for post in posts.items %}
   <div class="post">
     <h1 class="post-title"><a href="{{ url_for('main.show_post', id=post.id, slug=post.slug) }}">{{ post.title }}</a></h1>
@@ -14,18 +16,4 @@
   </div>
 {% endfor %}
 
-<div class="pull-left">
-  {% if posts.has_prev %}
-    <a class="btn btn-primary paginate-btn" href="{{ url_for('main.index', page=posts.prev_num) }}"><< Previous</a>
-  {% else %}
-    <a class="btn btn-default paginate-btn" href="#"><< Previous</a>
-  {% endif %}
-</div>
-
-<div class="pull-right">
-  {% if posts.has_next %}
-    <a class="btn btn-primary paginate-btn" href="{{ url_for('main.index', page=posts.next_num) }}">Next >></a>
-  {% else %}
-    <a class="btn btn-default paginate-btn" href="#">Next >></a>
-  {% endif %}
-</div>
+{{ render_pagination_buttons(posts) }}
