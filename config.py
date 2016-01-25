@@ -23,6 +23,11 @@ class Config:
             'key': 'posts_per_page',
             'name': 'Posts per page',
             'value': 10
+        },
+        {
+            'key': 'show_login_link',
+            'name': 'Show login link',
+            'value': True
         }
     ]
 

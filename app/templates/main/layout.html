@@ -19,6 +19,8 @@
           <li><a href="{{ url_for('main.index') }}">Home</a></li>
           {% if current_user.is_authenticated %}
             <li><a href="{{ url_for('admin.index') }}">Admin</a></li>
+          {% elif settings.show_login_link %}
+            <li><a href="{{ url_for('security.login') }}">Log in</a></li>
           {% endif %}
         </ul>
 
