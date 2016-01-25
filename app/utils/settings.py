@@ -18,7 +18,7 @@ class AppSettings(MutableMapping):
         self.__setitem__(key, value)
 
     def __getitem__(self, key):
-        return Setting.as_dict()[key].value
+        return Setting.as_dict()[key]
 
     def __iter__(self):
         return iter(Setting.as_dict())

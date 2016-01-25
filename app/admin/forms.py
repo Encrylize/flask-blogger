@@ -61,7 +61,7 @@ class SettingsForm(RedirectForm):
     def configure(cls):
         """ Adds all settings with a name as form fields. """
 
-        for setting in Setting.as_dict().values():
+        for setting in Setting.query.all():
             if setting.name is None:
                 continue
 
