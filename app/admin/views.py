@@ -26,7 +26,7 @@ def show_posts(page=1):
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        form.save()
+        form.save(set_author=True)
         flash('Added post.', 'success')
 
         return form.redirect(url_for('admin.index'))

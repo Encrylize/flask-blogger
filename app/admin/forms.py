@@ -1,4 +1,5 @@
 from flask import session, current_app
+from flask_security import current_user
 from wtforms.fields import StringField, TextAreaField, IntegerField, BooleanField
 from wtforms.validators import DataRequired, ValidationError
 
@@ -33,17 +34,24 @@ class PostForm(RedirectForm):
 
         return True
 
-    def save(self):
+    def save(self, set_author=False):
         """
         Saves the Post object.
+
+        Args:
+            set_author: If True, the author of the post is set to the current user.
 
         Returns:
             The Post object
 
         """
 
+        if set_author:
+            self.post.author = current_user
+
         self.populate_obj(self.post)
         self.post.tags = [get_or_create(Tag, name=tag)[0] for tag in set(self.tags.data)]
+
         return self.post.save()
 
     def populate_obj(self, obj):

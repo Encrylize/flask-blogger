@@ -40,6 +40,7 @@ class TestAdminBlueprint(ClientTestCase):
         post = Post.query.first()
 
         self.assertIsNotNone(post)
+        self.assertEqual(post.author.name, 'Foo Bar')
 
     def test_edit_post(self):
         post = Post(title='foo', short_text='bar', long_text='baz', slug='foo')
