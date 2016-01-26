@@ -1,4 +1,5 @@
 from flask_security import UserMixin, RoleMixin
+from slugify import slugify
 
 from app import cache, db
 from app.utils.database import CRUDMixin
@@ -18,11 +19,24 @@ class User(db.Model, UserMixin, CRUDMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     name = db.Column(db.String(255), nullable=False)
+    slug = db.Column(db.String(255))
     password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean)
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+
+    def save(self):
+        """
+        Creates the slug and saves the user.
+
+        Returns:
+            The User object
+
+        """
+
+        self.slug = slugify(self.name)
+        return super().save()
 
 
 class Setting(db.Model, CRUDMixin):

@@ -53,8 +53,8 @@ def test(coverage=False):
 def createadmin(email, name, password):
     """ Creates an admin user. """
     password = encrypt_password(password)
-    user_datastore.create_user(email=email, name=name, password=password)
-    db.session.commit()
+    user = User(email=email, name=name, password=password)
+    user.save()
 
 
 if __name__ == '__main__':
