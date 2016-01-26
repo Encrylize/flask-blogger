@@ -2,7 +2,7 @@
 <div class="post">
   <h1 class="post-title">{{ post.title }}</h1>
   <p class="post-byline">
-    Posted on {{ moment(post.timestamp).format('LLL') }}
+    Posted by {{ post.author.name }} on {{ moment(post.timestamp).format('LLL') }}
     {% if post.tags.all() %}
       under
       {% for tag in post.tags.all() %}
