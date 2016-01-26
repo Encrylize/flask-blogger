@@ -7,7 +7,8 @@
     <thead>
       <tr>
         <th class="col-xs-3">Title</th>
-        <th class="col-xs-3 col-md-4">Date</th>
+        <th>Author</th>
+        <th class="col-xs-3">Date</th>
         <th class="col-xs-3 col-sm-4">Tags</th>
         <th class="col-xs-3 col-sm-2 col-md-1">Action</th>
       </tr>
@@ -16,6 +17,7 @@
       {% for post in posts.items %}
         <tr>
           <td><a href="{{ url_for('main.show_post', id=post.id, slug=post.slug) }}">{{ post.title }}</a></td>
+          <td>{{ post.author.name }}</td>
           <td>{{ moment(post.timestamp).format('LLL') }}</td>
           <td>
             {% for tag in post.tags.all() %}
