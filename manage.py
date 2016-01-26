@@ -53,7 +53,7 @@ def test(coverage=False):
 def createadmin(email, name, password):
     """ Creates an admin user. """
     password = encrypt_password(password)
-    user = User(email=email, name=name, password=password)
+    user = User(email=email, name=name, password=password, active=True)
     user.save()
 
 
