@@ -17,6 +17,7 @@ class Role(db.Model, RoleMixin, CRUDMixin):
 class User(db.Model, UserMixin, CRUDMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
+    name = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean)
     roles = db.relationship('Role', secondary=roles_users,
