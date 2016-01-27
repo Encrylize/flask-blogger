@@ -4,6 +4,7 @@ from sqlalchemy import desc
 from app import db
 from app.main import main
 from app.main.forms import SearchForm
+from app.admin.models import User
 from app.main.models import Post, Tag, tags_posts
 
 
@@ -40,6 +41,21 @@ def show_tag(id, slug=None, page=1):
 
     return render_template('main/post_previews.html', title=tag.name,
                            header='Posts tagged with "%s":' % tag.name, posts=posts)
+
+
+@main.route('/user/<int:id>')
+@main.route('/user/<int:id>/<slug>')
+@main.route('/user/<int:id>/<slug>/<int:page>')
+def show_user(id, slug=None, page=1):
+    user = User.query.get_or_404(id)
+    if slug is None:
+        return redirect(url_for('main.show_user', id=id, slug=user.slug))
+
+    posts = user.posts.order_by(desc(Post.timestamp)).paginate(
+                page, current_app.config['SETTINGS']['posts_per_page'])
+
+    return render_template('main/post_previews.html', title=user.name,
+                           header='Posts by %s:' % user.name, posts=posts)
 
 
 @main.route('/search', methods=['POST'])
