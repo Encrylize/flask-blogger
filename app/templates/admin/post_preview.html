@@ -1,6 +1,7 @@
 {% extends 'admin/layout.html' %}
+{% from 'macros.html' import render_post with context %}
 
 {% block content %}
-  {% include 'post.html' %}
+  {{ render_post(post, preview=True) }}
   <a class="btn btn-primary" href="{{ request.referrer }}">Back</a>
 {% endblock %}

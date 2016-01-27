@@ -1,5 +1,6 @@
 {% extends 'main/layout.html' %}
+{% from 'macros.html' import render_post with context %}
 
 {% block content %}
-  {% include 'post.html' %}
+  {{ render_post(post) }}
 {% endblock %}

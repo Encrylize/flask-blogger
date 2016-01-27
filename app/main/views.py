@@ -14,7 +14,7 @@ def index(page=1):
     posts = Post.query.order_by(desc(Post.timestamp)).paginate(
                 page, current_app.config['SETTINGS']['posts_per_page'])
 
-    return render_template('main/index.html', title='Home', posts=posts)
+    return render_template('main/post_previews.html', title='Home', header='Posts', posts=posts)
 
 
 @main.route('/post/<int:id>')
@@ -38,7 +38,8 @@ def show_tag(id, slug=None, page=1):
     posts = tag.posts.order_by(desc(Post.timestamp)).paginate(
                 page, current_app.config['SETTINGS']['posts_per_page'])
 
-    return render_template('main/tag.html', title=tag.name, posts=posts, tag=tag)
+    return render_template('main/post_previews.html', title=tag.name,
+                           header='Posts tagged with "%s":' % tag.name, posts=posts)
 
 
 @main.route('/search', methods=['POST'])
@@ -55,7 +56,8 @@ def show_search_results(query, page=1):
     posts = Post.query.whoosh_search(query).order_by(desc(Post.timestamp)).paginate(
                 page, current_app.config['SETTINGS']['posts_per_page'])
 
-    return render_template('main/search_results.html', title='Search results', posts=posts, query=query)
+    return render_template('main/post_previews.html', title='Search results',
+                           header='Search results for %s:' % query, posts=posts)
 
 
 @main.context_processor

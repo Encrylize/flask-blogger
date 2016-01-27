@@ -89,6 +89,8 @@ def configure_extensions(app):
     security.init_app(app, user_datastore)
     whoosh_index(app, Post)
 
+    app.jinja_env.add_extension('jinja2.ext.do')
+
 
 def configure_blueprints(app):
     """

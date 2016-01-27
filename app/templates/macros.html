@@ -23,7 +23,8 @@
 {% macro render_pagination_buttons(pagination_object) %}
   <div class="pull-left">
     {% if pagination_object.has_prev %}
-      <a class="btn btn-primary paginate-btn" href="{{ url_for(request.endpoint, page=pagination_object.prev_num, **kwargs) }}"><< Previous</a>
+      {% do request.view_args.update({'page': pagination_object.prev_num}) %}
+      <a class="btn btn-primary paginate-btn" href="{{ url_for(request.endpoint, **request.view_args) }}"><< Previous</a>
     {% else %}
       <a class="btn btn-default paginate-btn" href="#"><< Previous</a>
     {% endif %}
@@ -31,9 +32,40 @@
 
   <div class="pull-right">
     {% if pagination_object.has_next %}
-      <a class="btn btn-primary paginate-btn" href="{{ url_for(request.endpoint, page=pagination_object.next_num, **kwargs) }}">Next >></a>
+      {% do request.view_args.update({'page': pagination_object.next_num}) %}
+      <a class="btn btn-primary paginate-btn" href="{{ url_for(request.endpoint, **request.view_args) }}">Next >></a>
     {% else %}
       <a class="btn btn-default paginate-btn" href="#">Next >></a>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro render_post(post, with_long_text=True, preview=False) %}
+  <div class="post">
+    <h1 class="post-title">
+      {% if preview %}
+        {{ post.title }}
+      {% else %}
+        <a href="{{ url_for('main.show_post', id=post.id, slug=post.slug) }}">{{ post.title }}</a>
+      {% endif %}
+    </h1>
+    <p class="post-byline">
+      Posted by {{ post.author.name }} on {{ moment(post.timestamp).format('LLL') }}
+      {% if post.tags.all() %}
+        under
+        {% for tag in post.tags.all() %}
+          {% if tag.id %}
+            <span class="label label-primary"><a href="{{ url_for('main.show_tag', id=tag.id, slug=tag.slug) }}">{{ tag.name }}</a></span>
+          {% else %}
+            <span class="label label-primary"><a href="#">{{ tag.name }}</a></span>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </p>
+    <p>{{ post.short_text|markdown }}</p>
+
+    {% if with_long_text %}
+      <p>{{ post.long_text|markdown }}</p>
     {% endif %}
   </div>
 {% endmacro %}
