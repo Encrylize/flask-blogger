@@ -54,6 +54,8 @@
 
       {% if preview %}
         <a href="#">{{ current_user.name }}</a>
+      {% elif not post.author %}
+        <a href="#">[Deleted Account]</a>
       {% else %}
         <a href="{{ url_for('main.show_user', id=post.author.id, slug=post.author.slug) }}">{{ post.author.name }}</a>
       {% endif %}
