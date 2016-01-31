@@ -1,5 +1,6 @@
 from flask import session, current_app
 from flask_security import current_user
+from flask_security.utils import encrypt_password
 from wtforms.fields import StringField, TextAreaField, IntegerField, BooleanField, PasswordField
 from wtforms.validators import DataRequired, ValidationError, Email
 
@@ -110,6 +111,8 @@ class UserForm(RedirectForm):
         """
 
         self.populate_obj(self.user)
+        self.user.active = True
+        self.user.password = encrypt_password(self.password.data)
         return self.user.save()
 
     def validate_email(self, field):
