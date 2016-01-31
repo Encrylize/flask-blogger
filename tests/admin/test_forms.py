@@ -1,5 +1,9 @@
+from wtforms import ValidationError
+
+from app import db
 from app.main.models import Tag
-from app.admin.forms import PostForm, SettingsForm
+from app.admin.models import User
+from app.admin.forms import PostForm, SettingsForm, UserForm
 from tests import AppTestCase, DummyPostData
 
 
@@ -49,3 +53,28 @@ class TestSettingsForm(AppTestCase):
         form.save()
 
         self.assertEqual(self.app.config['SETTINGS']['blog_name'], 'foobar')
+
+
+class TestUserForm(AppTestCase):
+    def test_save(self):
+        form = UserForm(DummyPostData(email='foo@bar.com', name='Foo Bar', password='foobar'))
+        form.save()
+
+        user = User.query.first()
+
+        self.assertEqual(user.email, 'foo@bar.com')
+        self.assertEqual(user.name, 'Foo Bar')
+        self.assertNotEqual(user.password, 'foobar')
+
+    def test_email_validation(self):
+        user = User(email='foo@bar.com', name='Foo Bar', password='foobar')
+        db.session.add(user)
+        db.session.commit()
+
+        form = UserForm(DummyPostData(email='foo@bar.com', name='Foo Baz', password='foobaz'))
+
+        self.assertFalse(form.validate())
+
+        form = UserForm(DummyPostData(email='foo@bar.com', name='Foo Baz', password='foobaz'), obj=user)
+
+        self.assertTrue(form.validate())
