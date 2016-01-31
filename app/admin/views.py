@@ -3,6 +3,7 @@ from flask_security import current_user
 from sqlalchemy import desc
 
 from app.admin import admin
+from app.admin.models import User
 from app.main.models import Post, Tag
 from app.admin.forms import PostForm, SettingsForm
 from app.utils.helpers import get_redirect_target
@@ -20,6 +21,13 @@ def show_posts(page=1):
     posts = Post.query.order_by(desc(Post.timestamp)).paginate(
                 page, current_app.config['SETTINGS']['posts_per_page'])
     return render_template('admin/posts.html', title='Posts', posts=posts)
+
+
+@admin.route('/users')
+@admin.route('/users/<int:page>')
+def show_users(page=1):
+    users = User.query.paginate(page, 10)
+    return render_template('admin/users.html', title='Users', users=users)
 
 
 @admin.route('/new/post', methods=['GET', 'POST'])
