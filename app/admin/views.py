@@ -5,7 +5,7 @@ from sqlalchemy import desc
 from app.admin import admin
 from app.admin.models import User
 from app.main.models import Post, Tag
-from app.admin.forms import PostForm, SettingsForm
+from app.admin.forms import PostForm, SettingsForm, UserForm
 from app.utils.helpers import get_redirect_target
 
 
@@ -86,6 +86,17 @@ def edit_settings():
         return form.redirect(url_for('admin.index'))
 
     return render_template('admin/settings.html', title='Settings', form=form)
+
+
+@admin.route('/new/user', methods=['GET', 'POST'])
+def new_user():
+    form = UserForm()
+    if form.validate_on_submit():
+        form.save()
+        flash('Created user.', 'success')
+        return form.redirect(url_for('admin.index'))
+
+    return render_template('admin/user_form.html', title='New user', form=form)
 
 
 @admin.before_request
