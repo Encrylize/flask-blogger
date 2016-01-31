@@ -1,9 +1,9 @@
 from flask import session, current_app
 from flask_security import current_user
-from wtforms.fields import StringField, TextAreaField, IntegerField, BooleanField
-from wtforms.validators import DataRequired, ValidationError
+from wtforms.fields import StringField, TextAreaField, IntegerField, BooleanField, PasswordField
+from wtforms.validators import DataRequired, ValidationError, Email
 
-from app.admin.models import Setting
+from app.admin.models import User, Setting
 from app.main.models import Post, Tag
 from app.utils.helpers import get_or_create
 from app.utils.forms import RedirectForm
@@ -89,3 +89,30 @@ class SettingsForm(RedirectForm):
     def validate_posts_per_page(self, field):
         if field.data < 1:
             raise ValidationError('This field must have a value of at least 1.')
+
+
+class UserForm(RedirectForm):
+    email = StringField('Email', [DataRequired(), Email()])
+    name = StringField('Name', [DataRequired()])
+    password = PasswordField('Password', [DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = kwargs.get('obj', User())
+
+    def save(self):
+        """
+        Saves the User object.
+
+        Returns:
+            The User object
+
+        """
+
+        self.populate_obj(self.user)
+        return self.user.save()
+
+    def validate_email(self, field):
+        user = User.query.filter_by(email=field.data).first()
+        if user is not None and user != self.user:
+            raise ValidationError('A user with this email already exists.')
