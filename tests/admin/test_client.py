@@ -1,6 +1,7 @@
 from flask import url_for
 
 from app import db, user_datastore
+from app.admin.models import User
 from app.main.models import Post, Tag
 from tests import ClientTestCase
 
@@ -113,3 +114,22 @@ class TestAdminBlueprint(ClientTestCase):
         self.client.post(url_for('admin.edit_settings'), data=form_data)
 
         self.assertEqual(self.app.config['SETTINGS']['blog_name'], 'foobar')
+
+    def test_new_user(self):
+        self.client.post(url_for('admin.new_user'), data={
+            'email': 'foo@baz.com',
+            'name': 'Foo Baz',
+            'password': 'foobaz'
+        })
+        user = User.query.filter_by(email='foo@baz.com').first()
+        
+        self.assertIsNotNone(user)
+
+        response = self.client.post(url_for('admin.new_user'), data={
+            'email': 'foo@baz.com',
+            'name': 'Fu Baz',
+            'password': 'fubaz'
+                   })
+
+        self.assertIn(b'A user with this email already exists.', response.data)
+
