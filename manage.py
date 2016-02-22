@@ -12,7 +12,7 @@ from app.main.models import Post, Tag
 from app.admin.models import User, Setting
 from config import basedir
 
-app = create_app(os.getenv('CONFIG', 'default'))
+app = create_app(os.getenv('CONFIG', 'development'))
 
 migrate = Migrate(app, db)
 manager = Manager(app)
